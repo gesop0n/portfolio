@@ -1,0 +1,48 @@
+// Zed project settings for portfolio
+// Prettier: formatter for Astro/TS/JS/CSS (prettier-plugin-astro + prettier-plugin-tailwindcss)
+// ESLint: linting via eslint-plugin-astro + typescript-eslint
+{
+  "formatter": "prettier",
+  "format_on_save": "on",
+  "language_servers": ["!biome"],
+  "languages": {
+    "Astro": {
+      "formatter": "prettier",
+      "language_servers": [
+        "astro-language-server",
+        "tailwindcss-language-server",
+        "eslint",
+        "!typescript-language-server",
+        "!vtsls",
+        "!biome",
+      ],
+    },
+    "TypeScript": {
+      "formatter": "prettier",
+      "language_servers": ["vtsls", "tailwindcss-language-server", "eslint", "!biome"],
+    },
+    "TSX": {
+      "formatter": "prettier",
+      "language_servers": ["vtsls", "tailwindcss-language-server", "eslint", "!biome"],
+    },
+    "JavaScript": {
+      "formatter": "prettier",
+      "language_servers": ["vtsls", "eslint", "!biome"],
+    },
+    "CSS": {
+      "formatter": "prettier",
+      "language_servers": ["tailwindcss-language-server"],
+    },
+  },
+  "lsp": {
+    "tailwindcss-language-server": {
+      "settings": {
+        "tailwindCSS": {
+          "includeLanguages": {
+            "astro": "html",
+          },
+        },
+      },
+    },
+  },
+}

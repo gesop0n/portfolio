@@ -1,0 +1,21 @@
+---
+import type { Lang } from '../i18n/translations';
+import { useTranslations } from '../i18n/translations';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="projects" class="border-t border-gray-100 py-24">
+  <div class="mx-auto max-w-4xl px-6">
+    <h2 class="mb-12 text-2xl font-bold text-gray-900">{t('projects.title')}</h2>
+
+    <div class="rounded-xl border border-dashed border-gray-200 p-12 text-center">
+      <p class="text-sm text-gray-400">{t('projects.empty')}</p>
+    </div>
+  </div>
+</section>

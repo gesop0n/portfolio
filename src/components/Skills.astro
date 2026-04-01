@@ -1,0 +1,79 @@
+---
+import type { Lang } from '../i18n/translations';
+import { useTranslations } from '../i18n/translations';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const languages = [
+  { name: 'Go', level: 'Intermediate' },
+  { name: 'TypeScript', level: 'Intermediate' },
+  { name: 'Python', level: 'Intermediate' },
+  { name: 'Rust', level: 'Learning' },
+  { name: 'Haskell', level: 'Learning' },
+  { name: 'Java', level: 'Basic' },
+];
+
+const areas = [
+  { key: 'skills.area.backend', icon: '⚙️' },
+  { key: 'skills.area.infra', icon: '☁️' },
+  { key: 'skills.area.system', icon: '🏗️' },
+] as const;
+
+const levelLabel: Record<string, { ja: string; en: string; color: string }> = {
+  Intermediate: { ja: '中級', en: 'Intermediate', color: 'bg-blue-100 text-blue-700' },
+  Learning: { ja: '学習中', en: 'Learning', color: 'bg-amber-100 text-amber-700' },
+  Basic: { ja: '基礎', en: 'Basic', color: 'bg-gray-100 text-gray-600' },
+};
+---
+
+<section id="skills" class="border-t border-gray-100 py-24">
+  <div class="mx-auto max-w-4xl px-6">
+    <h2 class="mb-12 text-2xl font-bold text-gray-900">{t('skills.title')}</h2>
+
+    <div class="grid gap-12 sm:grid-cols-2">
+      <!-- Languages -->
+      <div>
+        <h3 class="mb-6 text-xs font-semibold tracking-widest text-gray-400 uppercase">
+          {t('skills.languages')}
+        </h3>
+        <ul class="space-y-3">
+          {
+            languages.map((lang_item) => {
+              const label = levelLabel[lang_item.level];
+              return (
+                <li class="flex items-center justify-between">
+                  <span class="text-sm font-medium text-gray-800">{lang_item.name}</span>
+                  <span class={`rounded-full px-2 py-0.5 text-xs font-medium ${label.color}`}>
+                    {lang === 'ja' ? label.ja : label.en}
+                  </span>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </div>
+
+      <!-- Areas -->
+      <div>
+        <h3 class="mb-6 text-xs font-semibold tracking-widest text-gray-400 uppercase">
+          {t('skills.areas')}
+        </h3>
+        <ul class="space-y-3">
+          {
+            areas.map((area) => (
+              <li class="flex items-center gap-3">
+                <span class="text-base">{area.icon}</span>
+                <span class="text-sm font-medium text-gray-800">{t(area.key)}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

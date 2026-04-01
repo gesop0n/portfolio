@@ -1,0 +1,44 @@
+---
+import type { Lang } from '../i18n/translations';
+import { useTranslations, getAlternateLang, getLocalePath } from '../i18n/translations';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const alternateLang = getAlternateLang(lang);
+const alternatePath = getLocalePath(alternateLang);
+---
+
+<header
+  class="fixed top-0 right-0 left-0 z-50 border-b border-gray-100 bg-white/90 backdrop-blur-sm"
+>
+  <nav class="mx-auto flex h-14 max-w-4xl items-center justify-between px-6">
+    <a href={getLocalePath(lang)} class="font-semibold tracking-tight text-gray-900">
+      Kota Ishikuro
+    </a>
+
+    <div class="flex items-center gap-6">
+      <div class="hidden items-center gap-6 text-sm text-gray-600 sm:flex">
+        <a href={`${getLocalePath(lang)}#skills`} class="transition-colors hover:text-gray-900">
+          {t('nav.skills')}
+        </a>
+        <a href={`${getLocalePath(lang)}#projects`} class="transition-colors hover:text-gray-900">
+          {t('nav.projects')}
+        </a>
+        <a href={`${getLocalePath(lang)}#contact`} class="transition-colors hover:text-gray-900">
+          {t('nav.contact')}
+        </a>
+      </div>
+
+      <a
+        href={alternatePath}
+        class="rounded-full border border-gray-200 px-3 py-1 text-sm text-gray-600 transition-colors hover:border-gray-400 hover:text-gray-900"
+      >
+        {alternateLang === 'en' ? 'EN' : 'JA'}
+      </a>
+    </div>
+  </nav>
+</header>
