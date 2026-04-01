@@ -24,8 +24,18 @@ const { title = 'Kota Ishikuro', lang } = Astro.props;
     />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <!-- FOUC 防止: レンダリング前にテーマクラスを適用 -->
+    <script is:inline>
+      (function () {
+        const saved = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
   </head>
-  <body class="bg-white text-gray-900 antialiased">
+  <body class="bg-background text-foreground antialiased">
     <slot />
   </body>
 </html>

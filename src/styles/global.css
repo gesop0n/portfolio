@@ -1,5 +1,84 @@
 @import 'tailwindcss';
 
+/**
+ * class="dark" ベースのダークモード戦略。
+ * Tailwind の dark: バリアントも有効になる。
+ * JS (Layout.astro) が <html> に .dark を付け外しする。
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/**
+ * Semantic color tokens
+ *
+ * 使い方:
+ *   bg-background    → ページ背景
+ *   text-foreground  → メインテキスト
+ *   text-secondary   → 説明文など二次テキスト
+ *   text-tertiary    → ラベル・タイムスタンプなど三次テキスト
+ *   text-emphasis    → スキル名など少し強調したテキスト
+ *   border-divider   → セクション区切り線
+ *   border-outline   → ボタン・要素の枠線 / bg-outline でタイムライン縦線
+ *   border-outline-strong → タイムラインドット枠線
+ *   text-accent      → アクセントカラー（青）
+ *   bg-tag / text-tag-fg          → テックタグ
+ *   bg-badge / text-badge-fg      → 興味・関心バッジ
+ */
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-secondary: var(--secondary);
+  --color-tertiary: var(--tertiary);
+  --color-emphasis: var(--emphasis);
+  --color-divider: var(--divider);
+  --color-outline: var(--outline);
+  --color-outline-strong: var(--outline-strong);
+  --color-accent: var(--accent);
+  --color-tag: var(--tag);
+  --color-tag-fg: var(--tag-fg);
+  --color-badge: var(--badge);
+  --color-badge-fg: var(--badge-fg);
+  --color-course: var(--course);
+  --color-course-fg: var(--course-fg);
+}
+
+/* ── Light mode ────────────────────────────────────────────── */
+:root {
+  --background: #ffffff;
+  --foreground: #111827; /* gray-900 */
+  --secondary: #4b5563; /* gray-600 */
+  --tertiary: #9ca3af; /* gray-400 */
+  --emphasis: #1f2937; /* gray-800 */
+  --divider: #f3f4f6; /* gray-100 */
+  --outline: #e5e7eb; /* gray-200 */
+  --outline-strong: #d1d5db; /* gray-300 */
+  --accent: #2563eb; /* blue-600 */
+  --tag: #f3f4f6; /* gray-100 */
+  --tag-fg: #4b5563; /* gray-600 */
+  --badge: #fffbeb; /* amber-50 */
+  --badge-fg: #d97706; /* amber-600 */
+  --course: #f5f3ff; /* violet-50 */
+  --course-fg: #7c3aed; /* violet-600 */
+}
+
+/* ── Dark mode (.dark on <html>) ───────────────────────────── */
+.dark {
+  --background: #030712; /* gray-950 */
+  --foreground: #f9fafb; /* gray-100 */
+  --secondary: #9ca3af; /* gray-400 */
+  --tertiary: #6b7280; /* gray-500 */
+  --emphasis: #e5e7eb; /* gray-200 */
+  --divider: #1f2937; /* gray-800 */
+  --outline: #374151; /* gray-700 */
+  --outline-strong: #4b5563; /* gray-600 */
+  --accent: #60a5fa; /* blue-400 */
+  --tag: #374151; /* gray-700 */
+  --tag-fg: #9ca3af; /* gray-400 */
+  --badge: #451a03; /* amber-950 */
+  --badge-fg: #fbbf24; /* amber-400 */
+  --course: #2e1065; /* violet-950 */
+  --course-fg: #a78bfa; /* violet-400 */
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;

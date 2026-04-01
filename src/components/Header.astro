@@ -13,32 +13,92 @@ const alternatePath = getLocalePath(alternateLang);
 ---
 
 <header
-  class="fixed top-0 right-0 left-0 z-50 border-b border-gray-100 bg-white/90 backdrop-blur-sm"
+  class="border-divider bg-background/90 fixed top-0 right-0 left-0 z-50 border-b backdrop-blur-sm"
 >
   <nav class="mx-auto flex h-14 max-w-4xl items-center justify-between px-6">
-    <a href={getLocalePath(lang)} class="font-semibold tracking-tight text-gray-900">
+    <a href={getLocalePath(lang)} class="text-foreground font-semibold tracking-tight">
       Kota Ishikuro
     </a>
 
-    <div class="flex items-center gap-6">
-      <div class="hidden items-center gap-6 text-sm text-gray-600 sm:flex">
-        <a href={`${getLocalePath(lang)}#skills`} class="transition-colors hover:text-gray-900">
+    <div class="flex items-center gap-8">
+      <div class="text-secondary hidden items-center gap-6 text-sm sm:flex">
+        <a href={`${getLocalePath(lang)}#about`} class="hover:text-foreground transition-colors">
+          {t('nav.about')}
+        </a>
+        <a href={`${getLocalePath(lang)}#skills`} class="hover:text-foreground transition-colors">
           {t('nav.skills')}
         </a>
-        <a href={`${getLocalePath(lang)}#projects`} class="transition-colors hover:text-gray-900">
-          {t('nav.projects')}
-        </a>
-        <a href={`${getLocalePath(lang)}#contact`} class="transition-colors hover:text-gray-900">
-          {t('nav.contact')}
+        <a
+          href={`${getLocalePath(lang)}#experience`}
+          class="hover:text-foreground transition-colors"
+        >
+          {t('nav.experience')}
         </a>
       </div>
 
-      <a
-        href={alternatePath}
-        class="rounded-full border border-gray-200 px-3 py-1 text-sm text-gray-600 transition-colors hover:border-gray-400 hover:text-gray-900"
-      >
-        {alternateLang === 'en' ? 'EN' : 'JA'}
-      </a>
+      <div class="flex items-center gap-3">
+        <!-- Language switcher -->
+        <a
+          href={alternatePath}
+          class="border-outline text-secondary hover:border-outline-strong hover:text-foreground rounded-full border px-3 py-1 text-sm transition-colors"
+        >
+          {alternateLang === 'en' ? 'EN' : 'JA'}
+        </a>
+
+        <!-- Dark mode toggle -->
+        <button
+          id="theme-toggle"
+          aria-label="Toggle dark mode"
+          class="border-outline text-secondary hover:border-outline-strong hover:text-foreground rounded-full border p-2 transition-colors"
+        >
+          <!-- Moon: light mode のときに表示 (dark mode に切り替えるアイコン) -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="block dark:hidden"
+            aria-hidden="true"
+          >
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+          <!-- Sun: dark mode のときに表示 (light mode に切り替えるアイコン) -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="hidden dark:block"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="4"></circle>
+            <path
+              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+            ></path>
+          </svg>
+        </button>
+      </div>
     </div>
   </nav>
 </header>
+
+<script>
+  const btn = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+
+  btn?.addEventListener('click', () => {
+    const isDark = html.classList.contains('dark');
+    html.classList.toggle('dark', !isDark);
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+  });
+</script>

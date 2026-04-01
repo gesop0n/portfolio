@@ -9,69 +9,93 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-const languages = [
-  { name: 'Go', level: 'Intermediate' },
-  { name: 'TypeScript', level: 'Intermediate' },
-  { name: 'Python', level: 'Intermediate' },
-  { name: 'Rust', level: 'Learning' },
-  { name: 'Haskell', level: 'Learning' },
-  { name: 'Java', level: 'Basic' },
+type Label = 'interest' | 'course';
+
+const languages: { name: string; labels: Label[] }[] = [
+  { name: 'TypeScript', labels: [] },
+  { name: 'Python', labels: [] },
+  { name: 'Rust', labels: ['interest'] },
+  { name: 'Go', labels: ['interest'] },
+  { name: 'Haskell', labels: ['interest', 'course'] },
+  { name: 'Scala', labels: ['interest'] },
+  { name: 'Java', labels: ['course'] },
 ];
 
-const areas = [
-  { key: 'skills.area.backend', icon: '⚙️' },
-  { key: 'skills.area.infra', icon: '☁️' },
-  { key: 'skills.area.system', icon: '🏗️' },
-] as const;
+const frameworks = [
+  'Hono.js',
+  'tRPC',
+  'Prisma',
+  'FastAPI',
+  'Pydantic',
+  'Next.js',
+  'React',
+  'Tailwind CSS',
+];
 
-const levelLabel: Record<string, { ja: string; en: string; color: string }> = {
-  Intermediate: { ja: '中級', en: 'Intermediate', color: 'bg-blue-100 text-blue-700' },
-  Learning: { ja: '学習中', en: 'Learning', color: 'bg-amber-100 text-amber-700' },
-  Basic: { ja: '基礎', en: 'Basic', color: 'bg-gray-100 text-gray-600' },
-};
+const infra = [
+  'Cloud Run',
+  'Docker',
+  'Terraform',
+  'Vercel',
+  'BigQuery',
+  'Firestore',
+  'LangGraph',
+  'n8n',
+];
 ---
 
-<section id="skills" class="border-t border-gray-100 py-24">
+<section id="skills" class="border-divider border-t py-24">
   <div class="mx-auto max-w-4xl px-6">
-    <h2 class="mb-12 text-2xl font-bold text-gray-900">{t('skills.title')}</h2>
+    <h2 class="text-foreground mb-12 text-2xl font-bold">{t('skills.title')}</h2>
 
-    <div class="grid gap-12 sm:grid-cols-2">
+    <div class="grid gap-10 sm:grid-cols-3">
       <!-- Languages -->
       <div>
-        <h3 class="mb-6 text-xs font-semibold tracking-widest text-gray-400 uppercase">
+        <h3 class="text-tertiary mb-5 text-xs font-semibold tracking-widest uppercase">
           {t('skills.languages')}
         </h3>
         <ul class="space-y-3">
           {
-            languages.map((lang_item) => {
-              const label = levelLabel[lang_item.level];
-              return (
-                <li class="flex items-center justify-between">
-                  <span class="text-sm font-medium text-gray-800">{lang_item.name}</span>
-                  <span class={`rounded-full px-2 py-0.5 text-xs font-medium ${label.color}`}>
-                    {lang === 'ja' ? label.ja : label.en}
-                  </span>
-                </li>
-              );
-            })
+            languages.map((lang_item) => (
+              <li class="flex items-center justify-between gap-2">
+                <span class="text-emphasis text-sm font-medium">{lang_item.name}</span>
+                {lang_item.labels.length > 0 && (
+                  <div class="flex shrink-0 gap-1">
+                    {lang_item.labels.includes('interest') && (
+                      <span class="bg-badge text-badge-fg rounded-full px-2.5 py-0.5 text-xs font-medium">
+                        {t('skills.level.interest')}
+                      </span>
+                    )}
+                    {lang_item.labels.includes('course') && (
+                      <span class="bg-course text-course-fg rounded-full px-2.5 py-0.5 text-xs font-medium">
+                        {t('skills.level.course')}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </li>
+            ))
           }
         </ul>
       </div>
 
-      <!-- Areas -->
+      <!-- Frameworks -->
       <div>
-        <h3 class="mb-6 text-xs font-semibold tracking-widest text-gray-400 uppercase">
-          {t('skills.areas')}
+        <h3 class="text-tertiary mb-5 text-xs font-semibold tracking-widest uppercase">
+          {t('skills.frameworks')}
         </h3>
         <ul class="space-y-3">
-          {
-            areas.map((area) => (
-              <li class="flex items-center gap-3">
-                <span class="text-base">{area.icon}</span>
-                <span class="text-sm font-medium text-gray-800">{t(area.key)}</span>
-              </li>
-            ))
-          }
+          {frameworks.map((name) => <li class="text-emphasis text-sm font-medium">{name}</li>)}
+        </ul>
+      </div>
+
+      <!-- Infra -->
+      <div>
+        <h3 class="text-tertiary mb-5 text-xs font-semibold tracking-widest uppercase">
+          {t('skills.infra')}
+        </h3>
+        <ul class="space-y-3">
+          {infra.map((name) => <li class="text-emphasis text-sm font-medium">{name}</li>)}
         </ul>
       </div>
     </div>

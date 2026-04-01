@@ -1,6 +1,6 @@
 ---
 import type { Lang } from '../i18n/translations';
-import { useTranslations, getLocalePath } from '../i18n/translations';
+import { useTranslations } from '../i18n/translations';
 import { calcAge } from '../lib/date/calcAge';
 import { BIRTHDAY } from '../config/profile';
 
@@ -22,34 +22,24 @@ const lineCount = 12;
   >
     <!-- Left: text content -->
     <div>
-      <p class="mb-4 text-sm font-medium tracking-widest text-blue-600 uppercase">
+      <p class="text-accent mb-4 text-sm font-medium tracking-widest uppercase">
         {lang === 'ja' ? 'エンジニア' : 'Engineer'}
       </p>
 
-      <h1 class="mb-4 text-5xl leading-tight font-bold text-gray-900 sm:text-6xl">
+      <h1 class="text-foreground mb-4 text-5xl leading-tight font-bold sm:text-6xl">
         {name}
       </h1>
 
-      <p class="mb-6 text-xl text-gray-500">
-        {t('hero.role')}
-      </p>
-
-      <p class="mb-10 max-w-xl text-base leading-relaxed text-gray-600">
+      <p class="text-secondary mb-10 max-w-xl text-base leading-relaxed">
         {t('hero.description')}
       </p>
 
       <div class="flex items-center gap-4">
         <a
-          href={`${getLocalePath(lang)}#contact`}
-          class="rounded-lg bg-gray-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-gray-700"
-        >
-          {t('hero.contact')}
-        </a>
-        <a
           href="https://github.com/Kota-35"
           target="_blank"
           rel="noopener noreferrer"
-          class="flex items-center gap-2 rounded-lg border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:border-gray-400 hover:text-gray-900"
+          class="border-outline text-secondary hover:border-outline-strong hover:text-foreground flex items-center gap-2 rounded-lg border px-5 py-2.5 text-sm font-medium transition-colors"
         >
           <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path
@@ -62,7 +52,7 @@ const lineCount = 12;
       </div>
     </div>
 
-    <!-- Right: Haskell code block -->
+    <!-- Right: Haskell code block (Catppuccin Mocha — 固定カラー) -->
     <div class="w-full overflow-hidden rounded-xl bg-[#1e1e2e] font-mono text-sm shadow-2xl">
       <!-- Title bar -->
       <div class="flex items-center gap-2 border-b border-[#313244] bg-[#181825] px-4 py-3">
@@ -76,45 +66,36 @@ const lineCount = 12;
       <div class="px-6 py-5 text-[13px] sm:text-sm">
         <div class="flex gap-5">
           <!-- Line numbers -->
-          <div class="min-w-[1.5rem] shrink-0 text-right leading-7 text-[#45475a] select-none">
+          <div class="min-w-6 shrink-0 text-right leading-7 text-[#45475a] select-none">
             {Array.from({ length: lineCount }, (_, i) => <div>{i + 1}</div>)}
           </div>
 
           <!-- Code lines -->
           <div class="overflow-x-auto leading-7">
-            <!-- 1: data Engineer = Engineer -->
             <div>
               <span class="text-[#cba6f7]">data </span>
               <span class="text-[#89b4fa]">Engineer</span>
               <span class="text-[#cdd6f4]"> = </span>
               <span class="text-[#89b4fa]">Engineer</span>
             </div>
-
-            <!-- 2:   { name     :: String -->
             <div>
               <span class="text-[#cdd6f4]">&nbsp;&nbsp;&#123; </span>
               <span class="text-[#89dceb]">name</span>
               <span class="text-[#cdd6f4]"> :: </span>
               <span class="text-[#89b4fa]">String</span>
             </div>
-
-            <!-- 3:   , age      :: Int -->
             <div>
               <span class="text-[#cdd6f4]">&nbsp;&nbsp;, </span>
               <span class="text-[#89dceb]">age</span>
               <span class="text-[#cdd6f4]"> :: </span>
               <span class="text-[#89b4fa]">Int</span>
             </div>
-
-            <!-- 4:   , location :: String -->
             <div>
               <span class="text-[#cdd6f4]">&nbsp;&nbsp;, </span>
               <span class="text-[#89dceb]">location</span>
               <span class="text-[#cdd6f4]"> :: </span>
               <span class="text-[#89b4fa]">String</span>
             </div>
-
-            <!-- 5:   } deriving (Show) -->
             <div>
               <span class="text-[#cdd6f4]">&nbsp;&nbsp;&#125; </span>
               <span class="text-[#cba6f7]">deriving </span>
@@ -122,49 +103,35 @@ const lineCount = 12;
               <span class="text-[#89b4fa]">Show</span>
               <span class="text-[#cdd6f4]">)</span>
             </div>
-
-            <!-- 6: (blank) -->
             <div>&nbsp;</div>
-
-            <!-- 7: me :: Engineer -->
             <div>
               <span class="text-[#89dceb]">me</span>
               <span class="text-[#cdd6f4]"> :: </span>
               <span class="text-[#89b4fa]">Engineer</span>
             </div>
-
-            <!-- 8: me = Engineer -->
             <div>
               <span class="text-[#89dceb]">me</span>
               <span class="text-[#cdd6f4]"> = </span>
               <span class="text-[#89b4fa]">Engineer</span>
             </div>
-
-            <!-- 9:   { name     = "Kota Ishikuro" -->
             <div>
               <span class="text-[#cdd6f4]">&nbsp;&nbsp;&#123; </span>
               <span class="text-[#89dceb]">name</span>
               <span class="text-[#cdd6f4]"> = </span>
               <span class="text-[#a6e3a1]">{nameVal}</span>
             </div>
-
-            <!-- 10:   , age      = 21 -->
             <div>
               <span class="text-[#cdd6f4]">&nbsp;&nbsp;, </span>
               <span class="text-[#89dceb]">age</span>
               <span class="text-[#cdd6f4]"> = </span>
               <span class="text-[#fab387]">{age}</span>
             </div>
-
-            <!-- 11:   , location = "Japan, Nagano" -->
             <div>
               <span class="text-[#cdd6f4]">&nbsp;&nbsp;, </span>
               <span class="text-[#89dceb]">location</span>
               <span class="text-[#cdd6f4]"> = </span>
               <span class="text-[#a6e3a1]">"Japan, Nagano"</span>
             </div>
-
-            <!-- 12:   } -->
             <div>
               <span class="text-[#cdd6f4]">&nbsp;&nbsp;&#125;</span>
             </div>

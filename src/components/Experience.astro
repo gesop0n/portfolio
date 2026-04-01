@@ -1,0 +1,121 @@
+---
+import type { Lang } from '../i18n/translations';
+import { useTranslations } from '../i18n/translations';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+interface TimelineItem {
+  period: { ja: string; en: string };
+  title: { ja: string; en: string };
+  description: { ja: string; en: string };
+  tags: string[];
+}
+
+const items: TimelineItem[] = [
+  {
+    period: { ja: '2024年3月〜現在', en: 'Mar 2024 – Present' },
+    title: {
+      ja: 'スタートアップ インターン参加',
+      en: 'Joined Startup as Intern',
+    },
+    description: {
+      ja: 'マーケティング支援SaaSのバックエンド・フロントエンド開発に従事。Figmaプラグインの0から開発・公開、IMEバグ修正、GoogleTagManager導入など幅広いタスクを担当。',
+      en: 'Worked on backend and frontend of a marketing SaaS. Built and published a Figma plugin from scratch, fixed Japanese IME bugs, and integrated Google Tag Manager.',
+    },
+    tags: ['TypeScript', 'Next.js', 'Hono.js', 'tRPC', 'Prisma', 'PostgreSQL'],
+  },
+  {
+    period: { ja: '2024年', en: '2024' },
+    title: {
+      ja: 'データ分析基盤の構築',
+      en: 'Analytics Data Pipeline',
+    },
+    description: {
+      ja: 'ECマーケのショッピングデータ取得システムを構築し、BigQueryへ転送・加工。Looker StudioでBIダッシュボードを構築した。データ取得APIはPythonおよびRustで実装。',
+      en: 'Built a data ingestion system for e-commerce shopping data, transferred it to BigQuery, and created BI dashboards with Looker Studio. Implemented ingestion APIs in both Python and Rust.',
+    },
+    tags: ['Python', 'Rust', 'FastAPI', 'BigQuery', 'Cloud Run', 'Looker Studio'],
+  },
+  {
+    period: { ja: '2024年7月〜2025年1月', en: 'Jul 2024 – Jan 2025' },
+    title: {
+      ja: '分析ダッシュボードSaaS開発・デプロイ自動化',
+      en: 'Analytics Dashboard SaaS & Deploy Automation',
+    },
+    description: {
+      ja: 'バックエンドAPI開発・SQL分析クエリ作成に加え、Cloud RunへのTerraformデプロイフローをシェルスクリプトで自動化。手作業3〜5分の作業を1コマンド・1分以内に短縮した。',
+      en: 'Developed backend APIs and analytics SQL queries. Automated the Terraform-based Cloud Run deployment flow with a shell script, reducing a 3–5 min manual process to under 1 minute with a single command.',
+    },
+    tags: ['TypeScript', 'Hono.js', 'Next.js', 'GraphQL', 'Terraform', 'Cloud Run'],
+  },
+  {
+    period: { ja: '2024年〜', en: '2024 –' },
+    title: {
+      ja: 'Slack AIアシスタント開発（0から構築）',
+      en: 'Slack AI Assistant (Built from Scratch)',
+    },
+    description: {
+      ja: 'Slackでの議論にAIが参加できるボットを0から構築。現在はインサイドセールスのアポイント管理スレッドで活用され、100件超の会話履歴を踏まえた返答で業務効率化に貢献している。',
+      en: 'Built a Slack bot from scratch that joins team discussions with AI. Now used in inside sales threads to summarize 100+ message histories and respond contextually, improving team efficiency.',
+    },
+    tags: ['Python', 'FastAPI', 'LangGraph', 'Slack API', 'Docker'],
+  },
+  {
+    period: { ja: '2025年5〜6月', en: 'May – Jun 2025' },
+    title: {
+      ja: 'AIエージェントBEを0から設計・開発',
+      en: 'AI Agent Backend — Designed & Built from Scratch',
+    },
+    description: {
+      ja: '人材プラットフォームにAIチャット機能を提供するBEを0から開発。複数エージェント（Dify / LangGraph）を1エンドポイントで管理する設計を自分で立案し、エンジニアと議論しながら技術選定・CI/CD構築・Firestore導入まで担当した。',
+      en: 'Designed and built a backend from scratch to provide AI chat for an HR platform. Architected a single-endpoint system managing multiple agents (Dify / LangGraph), and handled tech selection, CI/CD setup, and Firestore integration.',
+    },
+    tags: ['Python', 'FastAPI', 'Firestore', 'Cloud Run', 'Docker'],
+  },
+];
+---
+
+<section id="experience" class="border-divider border-t py-24">
+  <div class="mx-auto max-w-4xl px-6">
+    <h2 class="text-foreground mb-12 text-2xl font-bold">{t('experience.title')}</h2>
+
+    <div class="relative">
+      <!-- Vertical line -->
+      <div class="bg-outline absolute top-0 bottom-0 left-[7px] w-px"></div>
+
+      <ol class="space-y-10">
+        {
+          items.map((item) => (
+            <li class="relative flex gap-6 pl-8">
+              <div class="border-outline-strong bg-background absolute top-[6px] left-0 h-[15px] w-[15px] rounded-full border-2" />
+
+              <div class="min-w-0 flex-1">
+                <p class="text-tertiary mb-1 text-xs font-medium">
+                  {lang === 'ja' ? item.period.ja : item.period.en}
+                </p>
+                <h3 class="text-foreground mb-2 text-sm font-semibold">
+                  {lang === 'ja' ? item.title.ja : item.title.en}
+                </h3>
+                <p class="text-secondary mb-3 text-sm leading-relaxed">
+                  {lang === 'ja' ? item.description.ja : item.description.en}
+                </p>
+                <div class="flex flex-wrap gap-1.5">
+                  {item.tags.map((tag) => (
+                    <span class="bg-tag text-tag-fg rounded-full px-2.5 py-0.5 text-xs font-medium">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
