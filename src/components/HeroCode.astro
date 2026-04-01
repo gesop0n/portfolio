@@ -235,11 +235,11 @@ const snippets = [
             ))}
           </div>
           {/* Code lines */}
-          <div class="overflow-x-auto leading-7 whitespace-pre">
+          <div class="overflow-x-auto">
             {snippet.lines.map((line) => (
-              <div>
+              <div class="leading-7">
                 {line.map((token) => (
-                  <span style={`color:${token.color}`}>{token.text}</span>
+                  <span class="whitespace-pre" style={`color:${token.color}`} set:text={token.text} />
                 ))}
               </div>
             ))}
