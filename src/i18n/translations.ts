@@ -63,7 +63,10 @@ export function useTranslations(lang: Lang) {
 }
 
 export function getLangFromUrl(url: URL): Lang {
-  const [, lang] = url.pathname.split('/');
+  // base が '/portfolio/' のとき pathname は '/portfolio/ja/...' になるため除去する
+  const base = import.meta.env.BASE_URL.replace(/\/$/, ''); // '/portfolio'
+  const pathname = url.pathname.slice(base.length); // '/ja/...'
+  const [, lang] = pathname.split('/');
   if (lang in languages) return lang as Lang;
   return 'ja';
 }
@@ -73,5 +76,7 @@ export function getAlternateLang(lang: Lang): Lang {
 }
 
 export function getLocalePath(lang: Lang, path: string = ''): string {
-  return `/${lang}${path}`;
+  // BASE_URL は末尾スラッシュ付きで提供される（例: '/portfolio/'）
+  const base = import.meta.env.BASE_URL.replace(/\/$/, ''); // '/portfolio'
+  return `${base}/${lang}${path}`;
 }
