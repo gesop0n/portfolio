@@ -5,14 +5,14 @@ interface Props {
 }
 const { nameVal, age } = Astro.props;
 
-// Catppuccin Mocha
+// Catppuccin Mocha (dark) / Latte (light) — switched via CSS variables
 const C = {
-  kw: '#cba6f7', // keyword
-  ty: '#89b4fa', // type / class name
-  fi: '#89dceb', // field / identifier
-  st: '#a6e3a1', // string
-  nu: '#fab387', // number
-  tx: '#cdd6f4', // default text
+  kw: 'var(--c-kw)',
+  ty: 'var(--c-ty)',
+  fi: 'var(--c-fi)',
+  st: 'var(--c-st)',
+  nu: 'var(--c-nu)',
+  tx: 'var(--c-tx)',
 } as const;
 
 type Token = { text: string; color: string };
@@ -179,20 +179,20 @@ const snippets = [
 ];
 ---
 
-<div class="w-full overflow-hidden rounded-xl bg-[#1e1e2e] font-mono text-sm shadow-2xl">
+<div class="code-block w-full overflow-hidden rounded-xl bg-[#eff1f5] font-mono text-sm shadow-2xl dark:bg-[#1e1e2e]">
   <!-- Title bar -->
-  <div class="flex items-center gap-2 border-b border-[#313244] bg-[#181825] px-4 py-3">
+  <div class="flex items-center gap-2 border-b border-[#ccd0da] bg-[#e6e9ef] px-4 py-3 dark:border-[#313244] dark:bg-[#181825]">
     <span class="h-3 w-3 rounded-full bg-[#f38ba8]"></span>
     <span class="h-3 w-3 rounded-full bg-[#fab387]"></span>
     <span class="h-3 w-3 rounded-full bg-[#a6e3a1]"></span>
-    <span id="code-filename" class="ml-3 text-xs text-[#6c7086]">
+    <span id="code-filename" class="ml-3 text-xs text-[#9ca0b0] dark:text-[#6c7086]">
       {snippets[0].filename}
     </span>
     <!-- Language badge + cycle button -->
     <button
       id="cycle-btn"
       title="次の言語へ"
-      class="ml-auto flex cursor-pointer items-center gap-1.5 rounded px-2 py-0.5 text-xs text-[#6c7086] transition-colors hover:bg-[#313244] hover:text-[#cdd6f4]"
+      class="ml-auto flex cursor-pointer items-center gap-1.5 rounded px-2 py-0.5 text-xs text-[#9ca0b0] transition-colors hover:bg-[#ccd0da] hover:text-[#4c4f69] dark:text-[#6c7086] dark:hover:bg-[#313244] dark:hover:text-[#cdd6f4]"
     >
       <span id="code-lang">{snippets[0].lang}</span>
       <!-- Lucide RefreshCw -->
@@ -226,7 +226,7 @@ const snippets = [
           class:list={['flex gap-5 transition-opacity duration-200', { hidden: i !== 0 }]}
         >
           <!-- Line numbers -->
-          <div class="min-w-6 shrink-0 select-none text-right leading-7 text-[#45475a]">
+          <div class="min-w-6 shrink-0 select-none text-right leading-7 text-[#acb0be] dark:text-[#45475a]">
             {snippet.lines.map((_, j) => (
               <div>{j + 1}</div>
             ))}
@@ -293,3 +293,25 @@ const snippets = [
     switchTo((current + 1) % snippets.length);
   });
 </script>
+
+<style>
+  /* Catppuccin Latte — light mode */
+  .code-block {
+    --c-kw: #8839ef;
+    --c-ty: #1e66f5;
+    --c-fi: #04a5e5;
+    --c-st: #40a02b;
+    --c-nu: #fe640b;
+    --c-tx: #4c4f69;
+  }
+
+  /* Catppuccin Mocha — dark mode */
+  :global(.dark) .code-block {
+    --c-kw: #cba6f7;
+    --c-ty: #89b4fa;
+    --c-fi: #89dceb;
+    --c-st: #a6e3a1;
+    --c-nu: #fab387;
+    --c-tx: #cdd6f4;
+  }
+</style>
