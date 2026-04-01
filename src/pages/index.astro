@@ -1,3 +1,20 @@
 ---
-return Astro.redirect(import.meta.env.BASE_URL + '/ja');
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Skills from '../components/Skills.astro';
+import Experience from '../components/Experience.astro';
+
+const lang = 'ja' as const;
 ---
+
+<Layout lang={lang} title="石黒 康太 - ポートフォリオ">
+  <Header lang={lang} />
+  <main>
+    <Hero lang={lang} />
+    <About lang={lang} />
+    <Skills lang={lang} />
+    <Experience lang={lang} />
+  </main>
+</Layout>
