@@ -3,6 +3,7 @@ import type { Lang } from '../i18n/translations';
 import { useTranslations } from '../i18n/translations';
 import { calcAge } from '../lib/date/calcAge';
 import { BIRTHDAY } from '../config/profile';
+import HeroCode from './HeroCode.astro';
 
 interface Props {
   lang: Lang;
@@ -13,7 +14,6 @@ const t = useTranslations(lang);
 const name = lang === 'ja' ? '石黒 康太' : 'Kota Ishikuro';
 const nameVal = lang === 'ja' ? '"石黒 康太"' : '"Kota Ishikuro"';
 const age = calcAge(BIRTHDAY);
-const lineCount = 12;
 ---
 
 <section class="flex min-h-screen items-center pt-14">
@@ -52,92 +52,7 @@ const lineCount = 12;
       </div>
     </div>
 
-    <!-- Right: Haskell code block (Catppuccin Mocha — 固定カラー) -->
-    <div class="w-full overflow-hidden rounded-xl bg-[#1e1e2e] font-mono text-sm shadow-2xl select-none">
-      <!-- Title bar -->
-      <div class="flex items-center gap-2 border-b border-[#313244] bg-[#181825] px-4 py-3">
-        <span class="h-3 w-3 rounded-full bg-[#f38ba8]"></span>
-        <span class="h-3 w-3 rounded-full bg-[#fab387]"></span>
-        <span class="h-3 w-3 rounded-full bg-[#a6e3a1]"></span>
-        <span class="ml-3 text-xs text-[#6c7086]">Engineer.hs</span>
-      </div>
-
-      <!-- Code body -->
-      <div class="px-6 py-5 text-[13px] sm:text-sm">
-        <div class="flex gap-5">
-          <!-- Line numbers -->
-          <div class="min-w-6 shrink-0 text-right leading-7 text-[#45475a] select-none">
-            {Array.from({ length: lineCount }, (_, i) => <div>{i + 1}</div>)}
-          </div>
-
-          <!-- Code lines -->
-          <div class="overflow-x-auto leading-7">
-            <div>
-              <span class="text-[#cba6f7]">data </span>
-              <span class="text-[#89b4fa]">Engineer</span>
-              <span class="text-[#cdd6f4]"> = </span>
-              <span class="text-[#89b4fa]">Engineer</span>
-            </div>
-            <div>
-              <span class="text-[#cdd6f4]">&nbsp;&nbsp;&#123; </span>
-              <span class="text-[#89dceb]">name</span>
-              <span class="text-[#cdd6f4]"> :: </span>
-              <span class="text-[#89b4fa]">String</span>
-            </div>
-            <div>
-              <span class="text-[#cdd6f4]">&nbsp;&nbsp;, </span>
-              <span class="text-[#89dceb]">age</span>
-              <span class="text-[#cdd6f4]"> :: </span>
-              <span class="text-[#89b4fa]">Int</span>
-            </div>
-            <div>
-              <span class="text-[#cdd6f4]">&nbsp;&nbsp;, </span>
-              <span class="text-[#89dceb]">location</span>
-              <span class="text-[#cdd6f4]"> :: </span>
-              <span class="text-[#89b4fa]">String</span>
-            </div>
-            <div>
-              <span class="text-[#cdd6f4]">&nbsp;&nbsp;&#125; </span>
-              <span class="text-[#cba6f7]">deriving </span>
-              <span class="text-[#cdd6f4]">(</span>
-              <span class="text-[#89b4fa]">Show</span>
-              <span class="text-[#cdd6f4]">)</span>
-            </div>
-            <div>&nbsp;</div>
-            <div>
-              <span class="text-[#89dceb]">me</span>
-              <span class="text-[#cdd6f4]"> :: </span>
-              <span class="text-[#89b4fa]">Engineer</span>
-            </div>
-            <div>
-              <span class="text-[#89dceb]">me</span>
-              <span class="text-[#cdd6f4]"> = </span>
-              <span class="text-[#89b4fa]">Engineer</span>
-            </div>
-            <div>
-              <span class="text-[#cdd6f4]">&nbsp;&nbsp;&#123; </span>
-              <span class="text-[#89dceb]">name</span>
-              <span class="text-[#cdd6f4]"> = </span>
-              <span class="text-[#a6e3a1]">{nameVal}</span>
-            </div>
-            <div>
-              <span class="text-[#cdd6f4]">&nbsp;&nbsp;, </span>
-              <span class="text-[#89dceb]">age</span>
-              <span class="text-[#cdd6f4]"> = </span>
-              <span class="text-[#fab387]">{age}</span>
-            </div>
-            <div>
-              <span class="text-[#cdd6f4]">&nbsp;&nbsp;, </span>
-              <span class="text-[#89dceb]">location</span>
-              <span class="text-[#cdd6f4]"> = </span>
-              <span class="text-[#a6e3a1]">"Japan, Nagano"</span>
-            </div>
-            <div>
-              <span class="text-[#cdd6f4]">&nbsp;&nbsp;&#125;</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Right: code block (language randomly selected, cyclic by button) -->
+    <HeroCode nameVal={nameVal} age={age} />
   </div>
 </section>

@@ -1,0 +1,295 @@
+---
+interface Props {
+  nameVal: string;
+  age: number;
+}
+const { nameVal, age } = Astro.props;
+
+// Catppuccin Mocha
+const C = {
+  kw: '#cba6f7', // keyword
+  ty: '#89b4fa', // type / class name
+  fi: '#89dceb', // field / identifier
+  st: '#a6e3a1', // string
+  nu: '#fab387', // number
+  tx: '#cdd6f4', // default text
+} as const;
+
+type Token = { text: string; color: string };
+const t = (text: string, color: string = C.tx): Token => ({ text, color });
+const blank = (): Token[] => [t('\u00a0')]; // blank line — nbsp keeps line height
+
+const nm = nameVal; // includes quotes e.g. '"Kota Ishikuro"'
+const ag = String(age);
+const loc = '"Japan, Nagano"';
+
+const snippets = [
+  {
+    lang: 'Haskell',
+    filename: 'Engineer.hs',
+    lines: [
+      [t('data ', C.kw), t('Engineer', C.ty), t(' = '), t('Engineer', C.ty)],
+      [t('  { '), t('name', C.fi), t('     :: '), t('String', C.ty)],
+      [t('  , '), t('age', C.fi), t('      :: '), t('Int', C.ty)],
+      [t('  , '), t('location', C.fi), t(' :: '), t('String', C.ty)],
+      [t('  } '), t('deriving ', C.kw), t('('), t('Show', C.ty), t(')')],
+      blank(),
+      [t('me', C.fi), t(' :: '), t('Engineer', C.ty)],
+      [t('me', C.fi), t(' = '), t('Engineer', C.ty)],
+      [t('  { '), t('name', C.fi), t('     = '), t(nm, C.st)],
+      [t('  , '), t('age', C.fi), t('      = '), t(ag, C.nu)],
+      [t('  , '), t('location', C.fi), t(' = '), t(loc, C.st)],
+      [t('  }')],
+      blank(),
+    ],
+  },
+  {
+    lang: 'TypeScript',
+    filename: 'Engineer.ts',
+    lines: [
+      [t('interface ', C.kw), t('Engineer ', C.ty), t('{')],
+      [t('  '), t('name', C.fi), t(': '), t('string', C.ty), t(';')],
+      [t('  '), t('age', C.fi), t(': '), t('number', C.ty), t(';')],
+      [t('  '), t('location', C.fi), t(': '), t('string', C.ty), t(';')],
+      [t('}')],
+      blank(),
+      [t('const ', C.kw), t('me', C.fi), t(': '), t('Engineer ', C.ty), t('= {')],
+      [t('  '), t('name', C.fi), t(': '), t(nm, C.st), t(',')],
+      [t('  '), t('age', C.fi), t(': '), t(ag, C.nu), t(',')],
+      [t('  '), t('location', C.fi), t(': '), t(loc, C.st), t(',')],
+      [t('};')],
+      blank(),
+      blank(),
+    ],
+  },
+  {
+    lang: 'Python',
+    filename: 'engineer.py',
+    lines: [
+      [t('from ', C.kw), t('dataclasses', C.ty), t(' import ', C.kw), t('dataclass', C.ty)],
+      blank(),
+      [t('@', C.kw), t('dataclass', C.ty)],
+      [t('class ', C.kw), t('Engineer', C.ty), t(':')],
+      [t('    '), t('name', C.fi), t(': '), t('str', C.ty)],
+      [t('    '), t('age', C.fi), t(': '), t('int', C.ty)],
+      [t('    '), t('location', C.fi), t(': '), t('str', C.ty)],
+      blank(),
+      [t('me ', C.fi), t('= '), t('Engineer', C.ty), t('(')],
+      [t('    '), t('name', C.fi), t('='), t(nm, C.st), t(',')],
+      [t('    '), t('age', C.fi), t('='), t(ag, C.nu), t(',')],
+      [t('    '), t('location', C.fi), t('='), t(loc, C.st), t(',')],
+      [t(')')],
+    ],
+  },
+  {
+    lang: 'Rust',
+    filename: 'engineer.rs',
+    lines: [
+      [t('struct ', C.kw), t('Engineer ', C.ty), t('{')],
+      [t('    '), t('name', C.fi), t(': '), t('String', C.ty), t(',')],
+      [t('    '), t('age', C.fi), t(': '), t('u8', C.ty), t(',')],
+      [t('    '), t('location', C.fi), t(': '), t('String', C.ty), t(',')],
+      [t('}')],
+      blank(),
+      [t('let ', C.kw), t('me ', C.fi), t('= '), t('Engineer ', C.ty), t('{')],
+      [t('    '), t('name', C.fi), t(': '), t(nm, C.st), t('.into(),')],
+      [t('    '), t('age', C.fi), t(': '), t(ag, C.nu), t(',')],
+      [t('    '), t('location', C.fi), t(': '), t(loc, C.st), t('.into(),')],
+      [t('};')],
+      blank(),
+      blank(),
+    ],
+  },
+  {
+    lang: 'Go',
+    filename: 'engineer.go',
+    lines: [
+      [t('type ', C.kw), t('Engineer ', C.ty), t('struct {')],
+      [t('    '), t('Name', C.fi), t('     '), t('string', C.ty)],
+      [t('    '), t('Age', C.fi), t('      '), t('int', C.ty)],
+      [t('    '), t('Location', C.fi), t(' '), t('string', C.ty)],
+      [t('}')],
+      blank(),
+      [t('me ', C.fi), t(':= '), t('Engineer', C.ty), t('{')],
+      [t('    '), t('Name', C.fi), t(':     '), t(nm, C.st), t(',')],
+      [t('    '), t('Age', C.fi), t(':      '), t(ag, C.nu), t(',')],
+      [t('    '), t('Location', C.fi), t(': '), t(loc, C.st), t(',')],
+      [t('}')],
+      blank(),
+      blank(),
+    ],
+  },
+  {
+    lang: 'Scala',
+    filename: 'Engineer.scala',
+    lines: [
+      [t('case ', C.kw), t('class ', C.kw), t('Engineer', C.ty), t('(')],
+      [t('  '), t('name', C.fi), t('    : '), t('String', C.ty), t(',')],
+      [t('  '), t('age', C.fi), t('     : '), t('Int', C.ty), t(',')],
+      [t('  '), t('location', C.fi), t(': '), t('String', C.ty), t(',')],
+      [t(')')],
+      blank(),
+      [t('val ', C.kw), t('me', C.fi), t(' = '), t('Engineer', C.ty), t('(')],
+      [t('  '), t('name', C.fi), t('     = '), t(nm, C.st), t(',')],
+      [t('  '), t('age', C.fi), t('      = '), t(ag, C.nu), t(',')],
+      [t('  '), t('location', C.fi), t(' = '), t(loc, C.st), t(',')],
+      [t(')')],
+      blank(),
+      blank(),
+    ],
+  },
+  {
+    lang: 'Java',
+    filename: 'Engineer.java',
+    lines: [
+      [t('public ', C.kw), t('record ', C.kw), t('Engineer', C.ty), t('(')],
+      [t('    '), t('String', C.ty), t(' '), t('name', C.fi), t(',')],
+      [t('    '), t('int', C.ty), t('    '), t('age', C.fi), t(',')],
+      [t('    '), t('String', C.ty), t(' '), t('location', C.fi)],
+      [t(') {}')],
+      blank(),
+      [t('var ', C.kw), t('me', C.fi), t(' = '), t('new ', C.kw), t('Engineer', C.ty), t('(')],
+      [t('    '), t(nm, C.st), t(',')],
+      [t('    '), t(ag, C.nu), t(',')],
+      [t('    '), t(loc, C.st)],
+      [t(');')],
+      blank(),
+      blank(),
+    ],
+  },
+  {
+    lang: 'C/C++',
+    filename: 'engineer.cpp',
+    lines: [
+      [t('#include ', C.kw), t('<string>', C.st)],
+      blank(),
+      [t('struct ', C.kw), t('Engineer ', C.ty), t('{')],
+      [t('    std::'), t('string', C.ty), t(' '), t('name', C.fi), t(';')],
+      [t('    '), t('int', C.ty), t('         '), t('age', C.fi), t(';')],
+      [t('    std::'), t('string', C.ty), t(' '), t('location', C.fi), t(';')],
+      [t('};')],
+      blank(),
+      [t('Engineer ', C.ty), t('me', C.fi), t(' = {')],
+      [t('    .'), t('name', C.fi), t('     = '), t(nm, C.st), t(',')],
+      [t('    .'), t('age', C.fi), t('      = '), t(ag, C.nu), t(',')],
+      [t('    .'), t('location', C.fi), t(' = '), t(loc, C.st), t(',')],
+      [t('};')],
+    ],
+  },
+];
+---
+
+<div class="w-full overflow-hidden rounded-xl bg-[#1e1e2e] font-mono text-sm shadow-2xl">
+  <!-- Title bar -->
+  <div class="flex items-center gap-2 border-b border-[#313244] bg-[#181825] px-4 py-3">
+    <span class="h-3 w-3 rounded-full bg-[#f38ba8]"></span>
+    <span class="h-3 w-3 rounded-full bg-[#fab387]"></span>
+    <span class="h-3 w-3 rounded-full bg-[#a6e3a1]"></span>
+    <span id="code-filename" class="ml-3 text-xs text-[#6c7086]">
+      {snippets[0].filename}
+    </span>
+    <!-- Language badge + cycle button -->
+    <button
+      id="cycle-btn"
+      title="次の言語へ"
+      class="ml-auto flex cursor-pointer items-center gap-1.5 rounded px-2 py-0.5 text-xs text-[#6c7086] transition-colors hover:bg-[#313244] hover:text-[#cdd6f4]"
+    >
+      <span id="code-lang">{snippets[0].lang}</span>
+      <!-- Lucide RefreshCw -->
+      <svg
+        width="11"
+        height="11"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+        <path d="M21 3v5h-5"></path>
+        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+        <path d="M8 16H3v5"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Code body: all snippets rendered, JS shows one at a time -->
+  <div class="px-6 py-5 text-[13px] sm:text-sm">
+    {
+      snippets.map((snippet, i) => (
+        <div
+          id={`snippet-${i}`}
+          data-filename={snippet.filename}
+          data-lang={snippet.lang}
+          class:list={['flex gap-5 transition-opacity duration-200', { hidden: i !== 0 }]}
+        >
+          <!-- Line numbers -->
+          <div class="min-w-6 shrink-0 select-none text-right leading-7 text-[#45475a]">
+            {snippet.lines.map((_, j) => (
+              <div>{j + 1}</div>
+            ))}
+          </div>
+          <!-- Code lines -->
+          <div class="overflow-x-auto leading-7 whitespace-pre">{snippet.lines.map((line) => (
+              <div>{line.map((token) => (
+                  <span style={`color:${token.color}`}>{token.text}</span>
+                ))}</div>
+            ))}</div>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  const snippets = Array.from(
+    document.querySelectorAll<HTMLElement>('[id^="snippet-"]'),
+  );
+  const filenameEl = document.getElementById('code-filename');
+  const langEl = document.getElementById('code-lang');
+  const cycleBtn = document.getElementById('cycle-btn');
+
+  let current = 0;
+
+  function updateLabels(index: number) {
+    if (filenameEl) filenameEl.textContent = snippets[index].dataset.filename ?? '';
+    if (langEl) langEl.textContent = snippets[index].dataset.lang ?? '';
+  }
+
+  function switchTo(next: number) {
+    const prev = snippets[current];
+    const nextEl = snippets[next];
+
+    prev.style.opacity = '0';
+    setTimeout(() => {
+      prev.classList.add('hidden');
+      prev.style.opacity = '';
+
+      nextEl.classList.remove('hidden');
+      nextEl.style.opacity = '0';
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => {
+          nextEl.style.opacity = '1';
+        }),
+      );
+    }, 200);
+
+    updateLabels(next);
+    current = next;
+  }
+
+  // ランダムな言語を即時表示（アニメーションなし）
+  const initial = Math.floor(Math.random() * snippets.length);
+  if (initial !== 0) {
+    snippets[0].classList.add('hidden');
+    snippets[initial].classList.remove('hidden');
+    updateLabels(initial);
+    current = initial;
+  }
+
+  cycleBtn?.addEventListener('click', () => {
+    switchTo((current + 1) % snippets.length);
+  });
+</script>
