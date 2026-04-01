@@ -179,9 +179,13 @@ const snippets = [
 ];
 ---
 
-<div class="code-block w-full overflow-hidden rounded-xl bg-[#eff1f5] font-mono text-sm shadow-2xl dark:bg-[#1e1e2e]">
+<div
+  class="code-block w-full overflow-hidden rounded-xl bg-[#eff1f5] font-mono text-sm shadow-2xl dark:bg-[#1e1e2e]"
+>
   <!-- Title bar -->
-  <div class="flex items-center gap-2 border-b border-[#ccd0da] bg-[#e6e9ef] px-4 py-3 dark:border-[#313244] dark:bg-[#181825]">
+  <div
+    class="flex items-center gap-2 border-b border-[#ccd0da] bg-[#e6e9ef] px-4 py-3 dark:border-[#313244] dark:bg-[#181825]"
+  >
     <span class="h-3 w-3 rounded-full bg-[#f38ba8]"></span>
     <span class="h-3 w-3 rounded-full bg-[#fab387]"></span>
     <span class="h-3 w-3 rounded-full bg-[#a6e3a1]"></span>
@@ -225,18 +229,21 @@ const snippets = [
           data-lang={snippet.lang}
           class:list={['flex gap-5 transition-opacity duration-200', { hidden: i !== 0 }]}
         >
-          <!-- Line numbers -->
-          <div class="min-w-6 shrink-0 select-none text-right leading-7 text-[#acb0be] dark:text-[#45475a]">
+          <div class="min-w-6 shrink-0 text-right leading-7 text-[#acb0be] select-none dark:text-[#45475a]">
             {snippet.lines.map((_, j) => (
               <div>{j + 1}</div>
             ))}
           </div>
-          <!-- Code lines -->
-          <div class="overflow-x-auto leading-7 whitespace-pre">{snippet.lines.map((line) => (
-              <div>{line.map((token) => (
+          {/* Code lines */}
+          <div class="overflow-x-auto leading-7 whitespace-pre">
+            {snippet.lines.map((line) => (
+              <div>
+                {line.map((token) => (
                   <span style={`color:${token.color}`}>{token.text}</span>
-                ))}</div>
-            ))}</div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       ))
     }
@@ -244,9 +251,7 @@ const snippets = [
 </div>
 
 <script>
-  const snippets = Array.from(
-    document.querySelectorAll<HTMLElement>('[id^="snippet-"]'),
-  );
+  const snippets = Array.from(document.querySelectorAll<HTMLElement>('[id^="snippet-"]'));
   const filenameEl = document.getElementById('code-filename');
   const langEl = document.getElementById('code-lang');
   const cycleBtn = document.getElementById('cycle-btn');
