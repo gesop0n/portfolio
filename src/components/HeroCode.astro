@@ -230,13 +230,13 @@ const snippets = [
           data-lang={snippet.lang}
           class:list={['flex gap-5 transition-opacity duration-200', { hidden: i !== 0 }]}
         >
-          <div class="min-w-6 shrink-0 text-right leading-7 text-[#acb0be] select-none dark:text-[#45475a]">
+          <div class="line-numbers min-w-6 shrink-0 text-right leading-7 text-[#acb0be] select-none dark:text-[#45475a]">
             {snippet.lines.map((_, j) => (
               <div>{j + 1}</div>
             ))}
           </div>
           {/* Code lines */}
-          <div class="overflow-x-auto">
+          <div class="code-lines overflow-x-auto">
             {snippet.lines.map((line) => (
               <div class="leading-7">
                 {line.map((token) => (
@@ -255,22 +255,96 @@ const snippets = [
   </div>
 </div>
 
-<script>
-  const snippets = Array.from(document.querySelectorAll<HTMLElement>('[id^="snippet-"]'));
+<script
+  define:vars={{
+    snippetsData: snippets.map((s) => ({ lang: s.lang, filename: s.filename, lines: s.lines })),
+  }}
+>
+  const allSnippets = Array.from(document.querySelectorAll('[id^="snippet-"]'));
   const filenameEl = document.getElementById('code-filename');
   const langEl = document.getElementById('code-lang');
   const cycleBtn = document.getElementById('cycle-btn');
 
   let current = 0;
+  let abortController = new AbortController();
 
-  function updateLabels(index: number) {
-    if (filenameEl) filenameEl.textContent = snippets[index].dataset.filename ?? '';
-    if (langEl) langEl.textContent = snippets[index].dataset.lang ?? '';
+  const CHAR_DELAY_INITIAL = 15; // ms/char on page load
+  const CHAR_DELAY_SWITCH = 10; // ms/char on manual switch
+
+  function sleep(ms, signal) {
+    return new Promise((resolve, reject) => {
+      if (signal.aborted) {
+        reject(new DOMException('Aborted'));
+        return;
+      }
+      const id = setTimeout(resolve, ms);
+      signal.addEventListener(
+        'abort',
+        () => {
+          clearTimeout(id);
+          reject(new DOMException('Aborted'));
+        },
+        { once: true },
+      );
+    });
   }
 
-  function switchTo(next: number) {
-    const prev = snippets[current];
-    const nextEl = snippets[next];
+  async function typeSnippet(index, charDelay, signal) {
+    const snippetEl = allSnippets[index];
+    const linesEl = snippetEl.querySelector('.code-lines');
+    const numsEl = snippetEl.querySelector('.line-numbers');
+    if (!linesEl || !numsEl) return;
+
+    linesEl.innerHTML = '';
+    numsEl.innerHTML = '';
+
+    const data = snippetsData[index];
+
+    // 行番号は最初に全行分まとめて表示
+    data.lines.forEach((_, i) => {
+      const numDiv = document.createElement('div');
+      numDiv.textContent = String(i + 1);
+      numsEl.appendChild(numDiv);
+    });
+
+    try {
+      for (let i = 0; i < data.lines.length; i++) {
+        const lineDiv = document.createElement('div');
+        lineDiv.className = 'leading-7';
+        linesEl.appendChild(lineDiv);
+
+        for (const token of data.lines[i]) {
+          const span = document.createElement('span');
+          span.className = 'whitespace-pre';
+          span.style.color = token.color;
+          lineDiv.appendChild(span);
+
+          for (const char of token.text) {
+            span.textContent += char;
+            await sleep(charDelay, signal);
+          }
+        }
+      }
+    } catch {
+      // typing aborted — leave partial content as-is
+    }
+  }
+
+  function updateLabels(index) {
+    if (filenameEl) filenameEl.textContent = snippetsData[index].filename;
+    if (langEl) langEl.textContent = snippetsData[index].lang;
+  }
+
+  function switchTo(next) {
+    abortController.abort();
+    abortController = new AbortController();
+    const signal = abortController.signal;
+
+    const prev = allSnippets[current];
+    const nextEl = allSnippets[next];
+
+    updateLabels(next);
+    current = next;
 
     prev.style.opacity = '0';
     setTimeout(() => {
@@ -284,23 +358,33 @@ const snippets = [
           nextEl.style.opacity = '1';
         }),
       );
-    }, 200);
 
-    updateLabels(next);
-    current = next;
+      typeSnippet(next, CHAR_DELAY_SWITCH, signal);
+    }, 200);
   }
 
-  // ランダムな言語を即時表示（アニメーションなし）
-  const initial = Math.floor(Math.random() * snippets.length);
+  // コードブロックの高さをタイピング中も固定する
+  const LINE_H = 28; // leading-7 = 1.75rem @ 16px base
+  const fixedHeight = Math.max(...snippetsData.map((s) => s.lines.length)) * LINE_H;
+  allSnippets.forEach((snippetEl) => {
+    const linesEl = snippetEl.querySelector('.code-lines');
+    const numsEl = snippetEl.querySelector('.line-numbers');
+    if (linesEl) linesEl.style.minHeight = fixedHeight + 'px';
+    if (numsEl) numsEl.style.minHeight = fixedHeight + 'px';
+  });
+
+  // 初期表示: ランダムな言語でタイピングアニメーション開始
+  const initial = Math.floor(Math.random() * allSnippets.length);
   if (initial !== 0) {
-    snippets[0].classList.add('hidden');
-    snippets[initial].classList.remove('hidden');
+    allSnippets[0].classList.add('hidden');
+    allSnippets[initial].classList.remove('hidden');
     updateLabels(initial);
     current = initial;
   }
+  typeSnippet(initial, CHAR_DELAY_INITIAL, abortController.signal);
 
   cycleBtn?.addEventListener('click', () => {
-    switchTo((current + 1) % snippets.length);
+    switchTo((current + 1) % allSnippets.length);
   });
 </script>
 
@@ -328,34 +412,146 @@ const snippets = [
   /* ── Per-language palettes ── */
 
   /* Haskell — purple */
-  :global([data-lang='Haskell']) { --c-kw: #7c3aed; --c-ty: #0369a1; --c-fi: #0891b2; --c-st: #16a34a; --c-nu: #dc2626; --c-tx: #3b3b52; }
-  :global(.dark [data-lang='Haskell']) { --c-kw: #c084fc; --c-ty: #60a5fa; --c-fi: #67e8f9; --c-st: #86efac; --c-nu: #fca5a5; --c-tx: #e2e8f0; }
+  :global([data-lang='Haskell']) {
+    --c-kw: #7c3aed;
+    --c-ty: #0369a1;
+    --c-fi: #0891b2;
+    --c-st: #16a34a;
+    --c-nu: #dc2626;
+    --c-tx: #3b3b52;
+  }
+  :global(.dark [data-lang='Haskell']) {
+    --c-kw: #c084fc;
+    --c-ty: #60a5fa;
+    --c-fi: #67e8f9;
+    --c-st: #86efac;
+    --c-nu: #fca5a5;
+    --c-tx: #e2e8f0;
+  }
 
   /* TypeScript — blue */
-  :global([data-lang='TypeScript']) { --c-kw: #1d4ed8; --c-ty: #0f766e; --c-fi: #0369a1; --c-st: #15803d; --c-nu: #b45309; --c-tx: #1e293b; }
-  :global(.dark [data-lang='TypeScript']) { --c-kw: #60a5fa; --c-ty: #2dd4bf; --c-fi: #7dd3fc; --c-st: #86efac; --c-nu: #fcd34d; --c-tx: #e2e8f0; }
+  :global([data-lang='TypeScript']) {
+    --c-kw: #1d4ed8;
+    --c-ty: #0f766e;
+    --c-fi: #0369a1;
+    --c-st: #15803d;
+    --c-nu: #b45309;
+    --c-tx: #1e293b;
+  }
+  :global(.dark [data-lang='TypeScript']) {
+    --c-kw: #60a5fa;
+    --c-ty: #2dd4bf;
+    --c-fi: #7dd3fc;
+    --c-st: #86efac;
+    --c-nu: #fcd34d;
+    --c-tx: #e2e8f0;
+  }
 
   /* Python — yellow / blue */
-  :global([data-lang='Python']) { --c-kw: #b45309; --c-ty: #1d4ed8; --c-fi: #0369a1; --c-st: #15803d; --c-nu: #7c3aed; --c-tx: #1e293b; }
-  :global(.dark [data-lang='Python']) { --c-kw: #fde047; --c-ty: #93c5fd; --c-fi: #7dd3fc; --c-st: #86efac; --c-nu: #c4b5fd; --c-tx: #e2e8f0; }
+  :global([data-lang='Python']) {
+    --c-kw: #b45309;
+    --c-ty: #1d4ed8;
+    --c-fi: #0369a1;
+    --c-st: #15803d;
+    --c-nu: #7c3aed;
+    --c-tx: #1e293b;
+  }
+  :global(.dark [data-lang='Python']) {
+    --c-kw: #fde047;
+    --c-ty: #93c5fd;
+    --c-fi: #7dd3fc;
+    --c-st: #86efac;
+    --c-nu: #c4b5fd;
+    --c-tx: #e2e8f0;
+  }
 
   /* Rust — orange */
-  :global([data-lang='Rust']) { --c-kw: #c2410c; --c-ty: #15803d; --c-fi: #0369a1; --c-st: #a16207; --c-nu: #7c3aed; --c-tx: #1e293b; }
-  :global(.dark [data-lang='Rust']) { --c-kw: #fb923c; --c-ty: #4ade80; --c-fi: #7dd3fc; --c-st: #fde047; --c-nu: #c084fc; --c-tx: #e2e8f0; }
+  :global([data-lang='Rust']) {
+    --c-kw: #c2410c;
+    --c-ty: #15803d;
+    --c-fi: #0369a1;
+    --c-st: #a16207;
+    --c-nu: #7c3aed;
+    --c-tx: #1e293b;
+  }
+  :global(.dark [data-lang='Rust']) {
+    --c-kw: #fb923c;
+    --c-ty: #4ade80;
+    --c-fi: #7dd3fc;
+    --c-st: #fde047;
+    --c-nu: #c084fc;
+    --c-tx: #e2e8f0;
+  }
 
   /* Go — teal */
-  :global([data-lang='Go']) { --c-kw: #0f766e; --c-ty: #0369a1; --c-fi: #6d28d9; --c-st: #15803d; --c-nu: #b45309; --c-tx: #1e293b; }
-  :global(.dark [data-lang='Go']) { --c-kw: #2dd4bf; --c-ty: #60a5fa; --c-fi: #a78bfa; --c-st: #86efac; --c-nu: #fcd34d; --c-tx: #e2e8f0; }
+  :global([data-lang='Go']) {
+    --c-kw: #0f766e;
+    --c-ty: #0369a1;
+    --c-fi: #6d28d9;
+    --c-st: #15803d;
+    --c-nu: #b45309;
+    --c-tx: #1e293b;
+  }
+  :global(.dark [data-lang='Go']) {
+    --c-kw: #2dd4bf;
+    --c-ty: #60a5fa;
+    --c-fi: #a78bfa;
+    --c-st: #86efac;
+    --c-nu: #fcd34d;
+    --c-tx: #e2e8f0;
+  }
 
   /* Scala — red */
-  :global([data-lang='Scala']) { --c-kw: #b91c1c; --c-ty: #c2410c; --c-fi: #0369a1; --c-st: #15803d; --c-nu: #7c3aed; --c-tx: #1e293b; }
-  :global(.dark [data-lang='Scala']) { --c-kw: #f87171; --c-ty: #fb923c; --c-fi: #7dd3fc; --c-st: #86efac; --c-nu: #c084fc; --c-tx: #e2e8f0; }
+  :global([data-lang='Scala']) {
+    --c-kw: #b91c1c;
+    --c-ty: #c2410c;
+    --c-fi: #0369a1;
+    --c-st: #15803d;
+    --c-nu: #7c3aed;
+    --c-tx: #1e293b;
+  }
+  :global(.dark [data-lang='Scala']) {
+    --c-kw: #f87171;
+    --c-ty: #fb923c;
+    --c-fi: #7dd3fc;
+    --c-st: #86efac;
+    --c-nu: #c084fc;
+    --c-tx: #e2e8f0;
+  }
 
   /* Java — amber */
-  :global([data-lang='Java']) { --c-kw: #92400e; --c-ty: #0369a1; --c-fi: #6d28d9; --c-st: #15803d; --c-nu: #b91c1c; --c-tx: #1e293b; }
-  :global(.dark [data-lang='Java']) { --c-kw: #fcd34d; --c-ty: #60a5fa; --c-fi: #a78bfa; --c-st: #86efac; --c-nu: #f87171; --c-tx: #e2e8f0; }
+  :global([data-lang='Java']) {
+    --c-kw: #92400e;
+    --c-ty: #0369a1;
+    --c-fi: #6d28d9;
+    --c-st: #15803d;
+    --c-nu: #b91c1c;
+    --c-tx: #1e293b;
+  }
+  :global(.dark [data-lang='Java']) {
+    --c-kw: #fcd34d;
+    --c-ty: #60a5fa;
+    --c-fi: #a78bfa;
+    --c-st: #86efac;
+    --c-nu: #f87171;
+    --c-tx: #e2e8f0;
+  }
 
   /* C/C++ — indigo */
-  :global([data-lang='C/C++']) { --c-kw: #3730a3; --c-ty: #0f766e; --c-fi: #6d28d9; --c-st: #15803d; --c-nu: #b91c1c; --c-tx: #1e293b; }
-  :global(.dark [data-lang='C/C++']) { --c-kw: #818cf8; --c-ty: #2dd4bf; --c-fi: #c084fc; --c-st: #86efac; --c-nu: #f87171; --c-tx: #e2e8f0; }
+  :global([data-lang='C/C++']) {
+    --c-kw: #3730a3;
+    --c-ty: #0f766e;
+    --c-fi: #6d28d9;
+    --c-st: #15803d;
+    --c-nu: #b91c1c;
+    --c-tx: #1e293b;
+  }
+  :global(.dark [data-lang='C/C++']) {
+    --c-kw: #818cf8;
+    --c-ty: #2dd4bf;
+    --c-fi: #c084fc;
+    --c-st: #86efac;
+    --c-nu: #f87171;
+    --c-tx: #e2e8f0;
+  }
 </style>
