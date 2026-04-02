@@ -2,8 +2,9 @@
 interface Props {
   nameVal: string;
   age: number;
+  location: string;
 }
-const { nameVal, age } = Astro.props;
+const { nameVal, age, location } = Astro.props;
 
 // Catppuccin Mocha (dark) / Latte (light) — switched via CSS variables
 const C = {
@@ -21,7 +22,7 @@ const blank = (): Token[] => [t('\u00a0')]; // blank line — nbsp keeps line he
 
 const nm = nameVal; // includes quotes e.g. '"Kota Ishikuro"'
 const ag = String(age);
-const loc = '"Japan, Nagano"';
+const loc = location;
 
 const snippets = [
   {
@@ -180,7 +181,7 @@ const snippets = [
 ---
 
 <div
-  class="code-block w-full overflow-hidden rounded-xl bg-[#eff1f5] font-mono text-sm shadow-2xl dark:bg-[#1e1e2e]"
+  class="code-block w-full overflow-hidden rounded-xl bg-[#eff1f5] font-mono text-sm shadow-2xl select-none dark:bg-[#1e1e2e]"
 >
   <!-- Title bar -->
   <div
@@ -239,7 +240,11 @@ const snippets = [
             {snippet.lines.map((line) => (
               <div class="leading-7">
                 {line.map((token) => (
-                  <span class="whitespace-pre" style={`color:${token.color}`} set:text={token.text} />
+                  <span
+                    class="whitespace-pre"
+                    style={`color:${token.color}`}
+                    set:text={token.text}
+                  />
                 ))}
               </div>
             ))}

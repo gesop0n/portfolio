@@ -14,6 +14,7 @@ const t = useTranslations(lang);
 const name = lang === 'ja' ? '石黒 康太' : 'Kota Ishikuro';
 const nameVal = lang === 'ja' ? '"石黒 康太"' : '"Kota Ishikuro"';
 const age = calcAge(BIRTHDAY);
+const location = lang === 'ja' ? '"長野県"' : '"Japan, Nagano';
 ---
 
 <section class="flex min-h-screen items-center pt-14">
@@ -53,6 +54,6 @@ const age = calcAge(BIRTHDAY);
     </div>
 
     <!-- Right: code block (language randomly selected, cyclic by button) -->
-    <HeroCode nameVal={nameVal} age={age} />
+    <HeroCode nameVal={nameVal} age={age} location={location} />
   </div>
 </section>

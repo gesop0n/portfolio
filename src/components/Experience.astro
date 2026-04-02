@@ -8,6 +8,7 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+const countSuffix = { ja: '件', en: ' projects' } as const;
 
 interface TimelineItem {
   period: { ja: string; en: string };
@@ -25,8 +26,12 @@ const personalItems: TimelineItem[] = [
   {
     period: { ja: '2020年4月 〜 2023年3月', en: 'Apr 2020 – Mar 2023' },
     title: {
-      ja: '富山県立富山東高校（サッカー部）',
-      en: 'Toyama Higashi High School (Soccer Club)',
+      ja: '富山県立富山東高校',
+      en: 'Toyama Higashi High School',
+    },
+    description: {
+      ja: 'サッカー部',
+      en: 'Soccor Club',
     },
   },
   {
@@ -34,6 +39,10 @@ const personalItems: TimelineItem[] = [
     title: {
       ja: '信州大学 工学部 電子情報システム工学科',
       en: 'Shinshu University, Dept. of Electrical & Computer Engineering',
+    },
+    description: {
+      ja: '情報プログラム所属。アルゴリズム・データ構造、OS、コンピュータネットワーク、データベース、機械学習など情報系の基礎を幅広く学んでいる。',
+      en: 'Information Program. Studying a broad range of CS fundamentals including algorithms & data structures, operating systems, networking, databases, and machine learning.',
     },
   },
 ];
@@ -45,50 +54,54 @@ const workItems: TimelineItem[] = [
       ja: 'スタートアップ インターン参加',
       en: 'Joined Startup as Intern',
     },
-    description: {
-      ja: 'マーケティング支援SaaSのバックエンド・フロントエンド開発に従事。Figmaプラグインの0から開発・公開、IMEバグ修正、GoogleTagManager導入など幅広いタスクを担当。',
-      en: 'Worked on backend and frontend of a marketing SaaS. Built and published a Figma plugin from scratch, fixed Japanese IME bugs, and integrated Google Tag Manager.',
-    },
-    tags: ['TypeScript', 'Next.js', 'Hono.js', 'tRPC', 'Prisma', 'PostgreSQL'],
     children: [
       {
-        period: { ja: '2024年', en: '2024' },
+        period: { ja: '2024年3月〜2024年8月', en: 'Mar – Aug 2024' },
         title: {
-          ja: 'データ分析基盤の構築',
-          en: 'Analytics Data Pipeline',
+          ja: '広告データ分析ダッシュボードの構築',
+          en: 'Advertising Analytics Dashboard',
         },
         description: {
-          ja: 'ECマーケのショッピングデータ取得システムを構築し、BigQueryへ転送・加工。Looker StudioでBIダッシュボードを構築した。データ取得APIはPythonおよびRustで実装。',
-          en: 'Built a data ingestion system for e-commerce shopping data, transferred it to BigQuery, and created BI dashboards with Looker Studio. Implemented ingestion APIs in both Python and Rust.',
+          ja: '広告データ等を可視化する分析ダッシュボードを作成。troccoでデータパイプラインを構築しBigQueryへ転送・加工。Looker StudioでBIダッシュボードを構築した。',
+          en: 'Built analytics dashboards to visualize advertising data. Constructed data pipelines with trocco, transferred and transformed data in BigQuery, and created BI dashboards with Looker Studio.',
         },
-        tags: ['Python', 'Rust', 'FastAPI', 'BigQuery', 'Cloud Run', 'Looker Studio'],
+        tags: ['BigQuery', 'trocco', 'Looker Studio'],
       },
       {
-        period: { ja: '2024年7月〜2025年1月', en: 'Jul 2024 – Jan 2025' },
+        period: { ja: '2024年9月〜2025年2月', en: 'Sep 2024 – Feb 2025' },
         title: {
           ja: '分析ダッシュボードSaaS開発・デプロイ自動化',
           en: 'Analytics Dashboard SaaS & Deploy Automation',
         },
         description: {
-          ja: 'バックエンドAPI開発・SQL分析クエリ作成に加え、Cloud RunへのTerraformデプロイフローをシェルスクリプトで自動化。手作業3〜5分の作業を1コマンド・1分以内に短縮した。',
-          en: 'Developed backend APIs and analytics SQL queries. Automated the Terraform-based Cloud Run deployment flow with a shell script, reducing a 3–5 min manual process to under 1 minute with a single command.',
+          ja: 'データを可視化する自社ウェブアプリの開発に参加。可視化のためのSQLクエリ作成と、TerraformベースのCloud RunデプロイをShellスクリプトで自動化し、手作業3〜5分の作業を1コマンド・1分以内に短縮した。',
+          en: 'Joined development of an in-house data visualization web app. Wrote analytics SQL queries and automated the Terraform-based Cloud Run deployment flow with a shell script, reducing a 3–5 min manual process to under 1 minute with a single command.',
         },
-        tags: ['TypeScript', 'Hono.js', 'Next.js', 'GraphQL', 'Terraform', 'Cloud Run'],
+        tags: [
+          'TypeScript',
+          'Hono.js',
+          'Next.js',
+          'GraphQL',
+          'Terraform',
+          'Cloud Run',
+          'BigQuery',
+          'Prisma',
+        ],
       },
       {
-        period: { ja: '2024年〜', en: '2024 –' },
+        period: { ja: '2025年1月〜2025年2月', en: 'Jan – Feb 2025' },
         title: {
           ja: 'Slack AIアシスタント開発（0から構築）',
           en: 'Slack AI Assistant (Built from Scratch)',
         },
         description: {
-          ja: 'Slackでの議論にAIが参加できるボットを0から構築。現在はインサイドセールスのアポイント管理スレッドで活用され、100件超の会話履歴を踏まえた返答で業務効率化に貢献している。',
-          en: 'Built a Slack bot from scratch that joins team discussions with AI. Now used in inside sales threads to summarize 100+ message histories and respond contextually, improving team efficiency.',
+          ja: 'Slackでの議論にAIが参加できるボットを0から構築。現在はインサイドセールスのアポイント管理スレッドで活用され、100件超の会話履歴を踏まえた返答で業務効率化に貢献している。社外チャンネルへの未返信メッセージに対するリマインド機能も実装。',
+          en: 'Built a Slack bot from scratch that joins team discussions with AI. Now used in inside sales threads to respond based on 100+ message histories, improving team efficiency. Also implemented unreplied message reminders for external Slack channels.',
         },
-        tags: ['Python', 'FastAPI', 'LangGraph', 'Slack API', 'Docker'],
+        tags: ['Python', 'FastAPI', 'LangGraph', 'Slack API', 'Cloud Run', 'Cloud Tasks'],
       },
       {
-        period: { ja: '2025年5〜6月', en: 'May – Jun 2025' },
+        period: { ja: '2025年4月〜2025年6月', en: 'Apr – Jun 2025' },
         title: {
           ja: 'AIエージェントBEを0から設計・開発',
           en: 'AI Agent Backend — Designed & Built from Scratch',
@@ -98,6 +111,29 @@ const workItems: TimelineItem[] = [
           en: 'Designed and built a backend from scratch to provide AI chat for an HR platform. Architected a single-endpoint system managing multiple agents (Dify / LangGraph), and handled tech selection, CI/CD setup, and Firestore integration.',
         },
         tags: ['Python', 'FastAPI', 'Firestore', 'Cloud Run', 'Docker'],
+      },
+      {
+        period: { ja: '2025年9月〜現在', en: 'Sep 2025 – Present' },
+        title: {
+          ja: 'マーケティングを支えるSaaS開発',
+          en: 'Marketing SaaS Development',
+        },
+        description: {
+          ja: 'AIで広告クリエイティブを作成・編集したり、広告データの分析を支援するSaaSの開発に参加。n8n内で動いていたChromiumをBrowserlessで外部に切り出してCloud Run上に独立させ、メモリ不足によるワークフロー停止を解消した。MastraからAI SDKへの移行も検討し、PoCとして実装。広告データを取得してBigQueryに流すパイプラインも構築した。また、FigmaプラグインでHTMLをインポートできるPoCも担当した。',
+          en: 'Joined a SaaS product that helps marketers create and edit ad creatives with AI and analyze ad data. Moved Chromium out of n8n into a standalone Browserless service on Cloud Run, fixing workflow crashes caused by memory pressure. Built a PoC for migrating from Mastra to AI SDK as a potential new agent foundation. Also built a data pipeline to pull advertising data into BigQuery, and created a Figma plugin PoC for importing HTML.',
+        },
+        tags: [
+          'TypeScript',
+          'Next.js',
+          'React',
+          'Tailwind CSS',
+          'Hono.js',
+          'tRPC',
+          'Prisma',
+          'NeonDB',
+          'Vercel',
+          'Cloud Run',
+        ],
       },
     ],
   },
@@ -119,12 +155,11 @@ const workItems: TimelineItem[] = [
             <li class="relative flex gap-6 pl-8">
               <div class="border-outline bg-background absolute top-1.5 left-0 h-3.75 w-3.75 rounded-full border-2" />
               <div class="min-w-0 flex-1">
-                <p class="text-tertiary mb-1 text-xs font-medium">
-                  {lang === 'ja' ? item.period.ja : item.period.en}
-                </p>
-                <h3 class="text-foreground text-sm font-semibold">
-                  {lang === 'ja' ? item.title.ja : item.title.en}
-                </h3>
+                <p class="text-tertiary mb-1 text-xs font-medium">{item.period[lang]}</p>
+                <h3 class="text-foreground text-sm font-semibold">{item.title[lang]}</h3>
+                {item.description && (
+                  <p class="text-secondary text-sm leading-relaxed">{item.description[lang]}</p>
+                )}
               </div>
             </li>
           ))
@@ -139,18 +174,13 @@ const workItems: TimelineItem[] = [
                 <div class="min-w-0 flex-1">
                   <details class="group">
                     <summary class="hover:bg-tag -mx-2 cursor-pointer list-none rounded-lg px-2 py-2 transition-colors duration-150">
-                      <p class="text-tertiary mb-1 text-xs font-medium">
-                        {lang === 'ja' ? item.period.ja : item.period.en}
-                      </p>
+                      <p class="text-tertiary mb-1 text-xs font-medium">{item.period[lang]}</p>
                       <div class="mb-2 flex items-center gap-2">
-                        <h3 class="text-foreground text-sm font-semibold">
-                          {lang === 'ja' ? item.title.ja : item.title.en}
-                        </h3>
+                        <h3 class="text-foreground text-sm font-semibold">{item.title[lang]}</h3>
                         {item.children && (
                           <span class="bg-tag text-tag-fg rounded-full px-2 py-0.5 text-xs font-medium">
-                            {lang === 'ja'
-                              ? `${item.children.length}件`
-                              : `${item.children.length} projects`}
+                            {item.children.length}
+                            {countSuffix[lang]}
                           </span>
                         )}
                         <span class="bg-tag text-tag-fg ml-auto flex h-5 w-5 shrink-0 items-center justify-center rounded-full">
@@ -170,7 +200,7 @@ const workItems: TimelineItem[] = [
                       </div>
                       {item.description && (
                         <p class="text-secondary mb-3 text-sm leading-relaxed">
-                          {lang === 'ja' ? item.description.ja : item.description.en}
+                          {item.description[lang]}
                         </p>
                       )}
                       {item.tags && (
@@ -193,14 +223,14 @@ const workItems: TimelineItem[] = [
                               <div class="border-outline bg-background absolute top-1.25 left-0 h-3.25 w-3.25 rounded-full border-2" />
                               <div class="min-w-0 flex-1">
                                 <p class="text-tertiary mb-1 text-xs font-medium">
-                                  {lang === 'ja' ? child.period.ja : child.period.en}
+                                  {child.period[lang]}
                                 </p>
                                 <h4 class="text-foreground mb-2 text-sm font-semibold">
-                                  {lang === 'ja' ? child.title.ja : child.title.en}
+                                  {child.title[lang]}
                                 </h4>
                                 {child.description && (
                                   <p class="text-secondary mb-3 text-sm leading-relaxed">
-                                    {lang === 'ja' ? child.description.ja : child.description.en}
+                                    {child.description[lang]}
                                   </p>
                                 )}
                                 {child.tags && (
@@ -225,15 +255,11 @@ const workItems: TimelineItem[] = [
               <li class="relative flex gap-6 pl-8">
                 <div class="border-outline-strong bg-background absolute top-1.5 left-0 h-3.75 w-3.75 rounded-full border-2" />
                 <div class="min-w-0 flex-1">
-                  <p class="text-tertiary mb-1 text-xs font-medium">
-                    {lang === 'ja' ? item.period.ja : item.period.en}
-                  </p>
-                  <h3 class="text-foreground mb-2 text-sm font-semibold">
-                    {lang === 'ja' ? item.title.ja : item.title.en}
-                  </h3>
+                  <p class="text-tertiary mb-1 text-xs font-medium">{item.period[lang]}</p>
+                  <h3 class="text-foreground mb-2 text-sm font-semibold">{item.title[lang]}</h3>
                   {item.description && (
                     <p class="text-secondary mb-3 text-sm leading-relaxed">
-                      {lang === 'ja' ? item.description.ja : item.description.en}
+                      {item.description[lang]}
                     </p>
                   )}
                   {item.tags && (
