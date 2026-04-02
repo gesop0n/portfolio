@@ -159,6 +159,33 @@ const snippets = [
     ],
   },
   {
+    lang: 'Zig',
+    filename: 'engineer.zig',
+    lines: [
+      [
+        t('const ', C.kw),
+        t('std ', C.fi),
+        t('= '),
+        t('@import', C.kw),
+        t('('),
+        t('"std"', C.st),
+        t(');'),
+      ],
+      blank(),
+      [t('const ', C.kw), t('Engineer ', C.ty), t('= '), t('struct ', C.kw), t('{')],
+      [t('    '), t('name', C.fi), t(': '), t('[]const u8', C.ty), t(',')],
+      [t('    '), t('age', C.fi), t(': '), t('u8', C.ty), t(',')],
+      [t('    '), t('location', C.fi), t(': '), t('[]const u8', C.ty), t(',')],
+      [t('};')],
+      blank(),
+      [t('const ', C.kw), t('me ', C.fi), t('= '), t('Engineer', C.ty), t('{')],
+      [t('    .'), t('name', C.fi), t(' = '), t(nm, C.st), t(',')],
+      [t('    .'), t('age', C.fi), t(' = '), t(ag, C.nu), t(',')],
+      [t('    .'), t('location', C.fi), t(' = '), t(loc, C.st), t(',')],
+      [t('};')],
+    ],
+  },
+  {
     lang: 'C/C++',
     filename: 'engineer.cpp',
     lines: [
@@ -552,6 +579,24 @@ const snippets = [
     --c-fi: #c084fc;
     --c-st: #86efac;
     --c-nu: #f87171;
+    --c-tx: #e2e8f0;
+  }
+
+  /* Zig — orange */
+  :global([data-lang='Zig']) {
+    --c-kw: #c2410c;
+    --c-ty: #0f766e;
+    --c-fi: #1d4ed8;
+    --c-st: #15803d;
+    --c-nu: #7c3aed;
+    --c-tx: #1e293b;
+  }
+  :global(.dark [data-lang='Zig']) {
+    --c-kw: #fb923c;
+    --c-ty: #2dd4bf;
+    --c-fi: #60a5fa;
+    --c-st: #86efac;
+    --c-nu: #c084fc;
     --c-tx: #e2e8f0;
   }
 </style>
