@@ -305,7 +305,7 @@ const snippets = [
 </script>
 
 <style>
-  /* Catppuccin Latte — light mode */
+  /* Fallback — light */
   .code-block {
     --c-kw: #8839ef;
     --c-ty: #1e66f5;
@@ -315,7 +315,7 @@ const snippets = [
     --c-tx: #4c4f69;
   }
 
-  /* Catppuccin Mocha — dark mode */
+  /* Fallback — dark */
   :global(.dark) .code-block {
     --c-kw: #cba6f7;
     --c-ty: #89b4fa;
@@ -324,4 +324,38 @@ const snippets = [
     --c-nu: #fab387;
     --c-tx: #cdd6f4;
   }
+
+  /* ── Per-language palettes ── */
+
+  /* Haskell — purple */
+  :global([data-lang='Haskell']) { --c-kw: #7c3aed; --c-ty: #0369a1; --c-fi: #0891b2; --c-st: #16a34a; --c-nu: #dc2626; --c-tx: #3b3b52; }
+  :global(.dark [data-lang='Haskell']) { --c-kw: #c084fc; --c-ty: #60a5fa; --c-fi: #67e8f9; --c-st: #86efac; --c-nu: #fca5a5; --c-tx: #e2e8f0; }
+
+  /* TypeScript — blue */
+  :global([data-lang='TypeScript']) { --c-kw: #1d4ed8; --c-ty: #0f766e; --c-fi: #0369a1; --c-st: #15803d; --c-nu: #b45309; --c-tx: #1e293b; }
+  :global(.dark [data-lang='TypeScript']) { --c-kw: #60a5fa; --c-ty: #2dd4bf; --c-fi: #7dd3fc; --c-st: #86efac; --c-nu: #fcd34d; --c-tx: #e2e8f0; }
+
+  /* Python — yellow / blue */
+  :global([data-lang='Python']) { --c-kw: #b45309; --c-ty: #1d4ed8; --c-fi: #0369a1; --c-st: #15803d; --c-nu: #7c3aed; --c-tx: #1e293b; }
+  :global(.dark [data-lang='Python']) { --c-kw: #fde047; --c-ty: #93c5fd; --c-fi: #7dd3fc; --c-st: #86efac; --c-nu: #c4b5fd; --c-tx: #e2e8f0; }
+
+  /* Rust — orange */
+  :global([data-lang='Rust']) { --c-kw: #c2410c; --c-ty: #15803d; --c-fi: #0369a1; --c-st: #a16207; --c-nu: #7c3aed; --c-tx: #1e293b; }
+  :global(.dark [data-lang='Rust']) { --c-kw: #fb923c; --c-ty: #4ade80; --c-fi: #7dd3fc; --c-st: #fde047; --c-nu: #c084fc; --c-tx: #e2e8f0; }
+
+  /* Go — teal */
+  :global([data-lang='Go']) { --c-kw: #0f766e; --c-ty: #0369a1; --c-fi: #6d28d9; --c-st: #15803d; --c-nu: #b45309; --c-tx: #1e293b; }
+  :global(.dark [data-lang='Go']) { --c-kw: #2dd4bf; --c-ty: #60a5fa; --c-fi: #a78bfa; --c-st: #86efac; --c-nu: #fcd34d; --c-tx: #e2e8f0; }
+
+  /* Scala — red */
+  :global([data-lang='Scala']) { --c-kw: #b91c1c; --c-ty: #c2410c; --c-fi: #0369a1; --c-st: #15803d; --c-nu: #7c3aed; --c-tx: #1e293b; }
+  :global(.dark [data-lang='Scala']) { --c-kw: #f87171; --c-ty: #fb923c; --c-fi: #7dd3fc; --c-st: #86efac; --c-nu: #c084fc; --c-tx: #e2e8f0; }
+
+  /* Java — amber */
+  :global([data-lang='Java']) { --c-kw: #92400e; --c-ty: #0369a1; --c-fi: #6d28d9; --c-st: #15803d; --c-nu: #b91c1c; --c-tx: #1e293b; }
+  :global(.dark [data-lang='Java']) { --c-kw: #fcd34d; --c-ty: #60a5fa; --c-fi: #a78bfa; --c-st: #86efac; --c-nu: #f87171; --c-tx: #e2e8f0; }
+
+  /* C/C++ — indigo */
+  :global([data-lang='C/C++']) { --c-kw: #3730a3; --c-ty: #0f766e; --c-fi: #6d28d9; --c-st: #15803d; --c-nu: #b91c1c; --c-tx: #1e293b; }
+  :global(.dark [data-lang='C/C++']) { --c-kw: #818cf8; --c-ty: #2dd4bf; --c-fi: #c084fc; --c-st: #86efac; --c-nu: #f87171; --c-tx: #e2e8f0; }
 </style>
