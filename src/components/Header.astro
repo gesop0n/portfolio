@@ -101,4 +101,19 @@ const alternatePath = getLocalePath(alternateLang);
     html.classList.toggle('dark', !isDark);
     localStorage.setItem('theme', isDark ? 'light' : 'dark');
   });
+
+  // Nav anchor links: instant jump instead of full-page smooth scroll
+  document.querySelectorAll('nav a[href*="#"]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      const hash = href?.split('#')[1];
+      if (!hash) return;
+      const target = document.getElementById(hash);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+        history.pushState(null, '', `#${hash}`);
+      }
+    });
+  });
 </script>
