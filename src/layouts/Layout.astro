@@ -4,10 +4,21 @@ import type { Lang } from '../i18n/translations';
 
 interface Props {
   title?: string;
+  description?: string;
   lang: Lang;
 }
 
-const { title = 'Kota Ishikuro', lang } = Astro.props;
+const SITE_URL = 'https://kota-35.github.io/portfolio';
+
+const {
+  title = 'Kota Ishikuro',
+  description = "I'm a student engineer passionate about backend systems and infrastructure.",
+  lang,
+} = Astro.props;
+
+const canonicalUrl = `${SITE_URL}/${lang}/`;
+const ogLocale = lang === 'ja' ? 'ja_JP' : 'en_US';
+const ogImage = `${SITE_URL}/og-image.png`;
 ---
 
 <!doctype html>
@@ -15,6 +26,24 @@ const { title = 'Kota Ishikuro', lang } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+
+    <!-- OGP -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:site_name" content="Kota Ishikuro" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/x-icon" href={`${import.meta.env.BASE_URL}/favicon.ico`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
