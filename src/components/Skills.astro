@@ -47,11 +47,11 @@ const infra = [
 
 <section id="skills" class="border-divider border-t py-24">
   <div class="mx-auto max-w-4xl px-6">
-    <h2 class="text-foreground mb-12 text-2xl font-bold">{t('skills.title')}</h2>
+    <h2 data-animate class="text-foreground mb-12 text-2xl font-bold">{t('skills.title')}</h2>
 
     <div class="grid gap-10 sm:grid-cols-3">
       <!-- Languages -->
-      <div>
+      <div data-animate style="transition-delay: 100ms">
         <h3 class="text-tertiary mb-5 text-xs font-semibold tracking-widest uppercase">
           {t('skills.languages')}
         </h3>
@@ -81,7 +81,7 @@ const infra = [
       </div>
 
       <!-- Frameworks -->
-      <div>
+      <div data-animate style="transition-delay: 200ms">
         <h3 class="text-tertiary mb-5 text-xs font-semibold tracking-widest uppercase">
           {t('skills.frameworks')}
         </h3>
@@ -91,7 +91,7 @@ const infra = [
       </div>
 
       <!-- Infra -->
-      <div>
+      <div data-animate style="transition-delay: 300ms">
         <h3 class="text-tertiary mb-5 text-xs font-semibold tracking-widest uppercase">
           {t('skills.infra')}
         </h3>

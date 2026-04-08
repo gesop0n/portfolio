@@ -79,6 +79,26 @@
   --course-fg: #a78bfa; /* violet-400 */
 }
 
+/* ── Scroll animations ─────────────────────────────────────── */
+[data-animate] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease;
+}
+[data-animate].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-animate] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;

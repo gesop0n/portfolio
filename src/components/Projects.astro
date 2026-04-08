@@ -12,9 +12,13 @@ const t = useTranslations(lang);
 
 <section id="projects" class="border-divider border-t py-24">
   <div class="mx-auto max-w-4xl px-6">
-    <h2 class="text-foreground mb-12 text-2xl font-bold">{t('projects.title')}</h2>
+    <h2 data-animate class="text-foreground mb-12 text-2xl font-bold">{t('projects.title')}</h2>
 
-    <div class="border-outline rounded-xl border border-dashed p-12 text-center">
+    <div
+      data-animate
+      style="transition-delay: 100ms"
+      class="border-outline rounded-xl border border-dashed p-12 text-center"
+    >
       <p class="text-tertiary text-sm">{t('projects.empty')}</p>
     </div>
   </div>

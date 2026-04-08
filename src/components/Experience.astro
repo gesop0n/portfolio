@@ -142,7 +142,7 @@ const workItems: TimelineItem[] = [
 
 <section id="experience" class="border-divider border-t py-24">
   <div class="mx-auto max-w-4xl px-6">
-    <h2 class="text-foreground mb-12 text-2xl font-bold">{t('experience.title')}</h2>
+    <h2 data-animate class="text-foreground mb-12 text-2xl font-bold">{t('experience.title')}</h2>
 
     <div class="relative">
       <!-- Vertical line -->
@@ -151,8 +151,12 @@ const workItems: TimelineItem[] = [
       <ol class="space-y-10">
         <!-- Personal background items -->
         {
-          personalItems.map((item) => (
-            <li class="relative flex gap-6 pl-8">
+          personalItems.map((item, i) => (
+            <li
+              data-animate
+              style={`transition-delay: ${i * 80}ms`}
+              class="relative flex gap-6 pl-8"
+            >
               <div class="border-outline bg-background absolute top-1.5 left-0 h-3.75 w-3.75 rounded-full border-2" />
               <div class="min-w-0 flex-1">
                 <p class="text-tertiary mb-1 text-xs font-medium">{item.period[lang]}</p>
@@ -167,9 +171,13 @@ const workItems: TimelineItem[] = [
 
         <!-- Work items -->
         {
-          workItems.map((item) =>
+          workItems.map((item, i) =>
             item.children ? (
-              <li class="relative flex gap-6 pl-8">
+              <li
+                data-animate
+                style={`transition-delay: ${(personalItems.length + i) * 80}ms`}
+                class="relative flex gap-6 pl-8"
+              >
                 <div class="border-outline-strong bg-background absolute top-1.5 left-0 h-3.75 w-3.75 rounded-full border-2" />
                 <div class="min-w-0 flex-1">
                   <details class="group">
@@ -252,7 +260,11 @@ const workItems: TimelineItem[] = [
                 </div>
               </li>
             ) : (
-              <li class="relative flex gap-6 pl-8">
+              <li
+                data-animate
+                style={`transition-delay: ${(personalItems.length + i) * 80}ms`}
+                class="relative flex gap-6 pl-8"
+              >
                 <div class="border-outline-strong bg-background absolute top-1.5 left-0 h-3.75 w-3.75 rounded-full border-2" />
                 <div class="min-w-0 flex-1">
                   <p class="text-tertiary mb-1 text-xs font-medium">{item.period[lang]}</p>
