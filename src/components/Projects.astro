@@ -8,18 +8,116 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+
+interface Blob {
+  color: string;
+  x: number;
+  y: number;
+}
+
+interface Project {
+  title: string;
+  tags: string[];
+  github: string;
+  mesh: { base: string; blobs: Blob[] };
+}
+
+const projects: Project[] = [
+  {
+    title: 'Portfolio',
+    tags: ['Astro', 'Tailwind CSS'],
+    github: 'https://github.com/Kota-35/portfolio',
+    mesh: {
+      base: '#1e1b4b',
+      blobs: [
+        { color: '#818cf8', x: 15, y: 20 },
+        { color: '#c084fc', x: 80, y: 25 },
+        { color: '#60a5fa', x: 55, y: 85 },
+        { color: '#a78bfa', x: 20, y: 75 },
+      ],
+    },
+  },
+  {
+    title: 'go-ratelimit',
+    tags: ['Go', 'Docker'],
+    github: 'https://github.com/Kota-35/go-ratelimit',
+    mesh: {
+      base: '#042f2e',
+      blobs: [
+        { color: '#38bdf8', x: 20, y: 20 },
+        { color: '#34d399', x: 80, y: 30 },
+        { color: '#06b6d4', x: 50, y: 80 },
+        { color: '#2dd4bf', x: 85, y: 80 },
+      ],
+    },
+  },
+];
+
+function meshGradient({ base, blobs }: Project['mesh']): string {
+  return [
+    ...blobs.map(
+      ({ color, x, y }) =>
+        `radial-gradient(ellipse 85% 85% at ${x}% ${y}%, ${color}cc 0%, transparent 70%)`,
+    ),
+    base,
+  ].join(', ');
+}
 ---
 
 <section id="projects" class="border-divider border-t py-24">
   <div class="mx-auto max-w-4xl px-6">
     <h2 data-animate class="text-foreground mb-12 text-2xl font-bold">{t('projects.title')}</h2>
 
-    <div
-      data-animate
-      style="transition-delay: 100ms"
-      class="border-outline rounded-xl border border-dashed p-12 text-center"
-    >
-      <p class="text-tertiary text-sm">{t('projects.empty')}</p>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      {
+        projects.map((project, i) => (
+          <a
+            data-animate
+            style={`transition-delay: ${i * 100}ms`}
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group hover:bg-tag flex items-start gap-5 rounded-xl p-1 transition-colors duration-150"
+          >
+            {/* Mesh gradient thumbnail */}
+            <div
+              class="h-36 w-36 shrink-0 rounded-xl sm:h-32 sm:w-32 md:h-36 md:w-36"
+              style={`background: ${meshGradient(project.mesh)}`}
+            />
+
+            {/* Content */}
+            <div class="min-w-0 flex-1 pt-1">
+              <div class="mb-3 flex items-center gap-2">
+                <h3 class="text-foreground text-sm font-semibold">{project.title}</h3>
+                <svg
+                  class="text-tertiary h-3.5 w-3.5 shrink-0 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M4.25 5.5a.75.75 0 0 0-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75v-4a.75.75 0 0 1 1.5 0v4A2.25 2.25 0 0 1 12.75 17h-8.5A2.25 2.25 0 0 1 2 14.75v-8.5A2.25 2.25 0 0 1 4.25 4h5a.75.75 0 0 1 0 1.5h-5Z"
+                    clip-rule="evenodd"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    d="M6.194 12.753a.75.75 0 0 0 1.06.053L16.5 4.44v2.81a.75.75 0 0 0 1.5 0v-4.5a.75.75 0 0 0-.75-.75h-4.5a.75.75 0 0 0 0 1.5h2.553l-9.056 8.194a.75.75 0 0 0-.053 1.06Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <div class="flex flex-wrap gap-1.5">
+                {project.tags.map((tag) => (
+                  <span class="bg-tag text-tag-fg rounded-full px-2.5 py-0.5 text-xs font-medium">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </a>
+        ))
+      }
     </div>
   </div>
 </section>
