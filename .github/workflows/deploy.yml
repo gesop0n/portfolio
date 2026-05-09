@@ -3,9 +3,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
-
 
 permissions:
   contents: read
@@ -18,15 +17,16 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v5
+
       - name: Install, build, and upload your site
         uses: withastro/action@v5
         with:
           path: .
           node-version: 22
-          package-manager: pnpm@latest
+          package-manager: pnpm@10.12.2
           build-cmd: pnpm run build
         # env:
-          # PUBLIC_POKEAPI: 'https://pokeapi.co/api/v2'
+        # PUBLIC_POKEAPI: 'https://pokeapi.co/api/v2'
 
   deploy:
     needs: build
