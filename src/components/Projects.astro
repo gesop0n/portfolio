@@ -1,4 +1,6 @@
 ---
+import ProjectThumbnail from './thumbnails/ProjectThumbnail.astro';
+import type { Thumbnail } from './thumbnails/types';
 import type { Lang } from '../i18n/translations';
 import { useTranslations } from '../i18n/translations';
 
@@ -9,25 +11,28 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-interface Blob {
-  color: string;
-  x: number;
-  y: number;
-}
-
 interface Project {
   title: string;
   tags: string[];
   github: string;
-  mesh: { base: string; blobs: Blob[] };
+  thumbnail: Thumbnail;
 }
 
 const projects: Project[] = [
   {
+    title: 'spaco',
+    tags: ['Go', 'React', 'PostgreSQL', 'Cloudflare Workers'],
+    github: 'https://github.com/gesop0n/spaco',
+    // palette に light / dark を渡すと既定のオーロラ配色を部分的に上書きできる
+    // 例: palette: { light: { violet: '#7c3aed' }, dark: { violet: '#4c1d95' } }
+    thumbnail: { kind: 'aurora' },
+  },
+  {
     title: 'portfolio',
     tags: ['Astro', 'Tailwind CSS'],
-    github: 'https://github.com/Kota-35/portfolio',
-    mesh: {
+    github: 'https://github.com/gesop0n/portfolio',
+    thumbnail: {
+      kind: 'mesh',
       base: '#1e1b4b',
       blobs: [
         { color: '#818cf8', x: 15, y: 20 },
@@ -40,8 +45,9 @@ const projects: Project[] = [
   {
     title: 'go-ratelimit',
     tags: ['Go', 'Docker', 'Redis'],
-    github: 'https://github.com/Kota-35/go-ratelimit',
-    mesh: {
+    github: 'https://github.com/gesop0n/go-ratelimit',
+    thumbnail: {
+      kind: 'mesh',
       base: '#042f2e',
       blobs: [
         { color: '#38bdf8', x: 20, y: 20 },
@@ -52,16 +58,6 @@ const projects: Project[] = [
     },
   },
 ];
-
-function meshGradient({ base, blobs }: Project['mesh']): string {
-  return [
-    ...blobs.map(
-      ({ color, x, y }) =>
-        `radial-gradient(ellipse 85% 85% at ${x}% ${y}%, ${color}cc 0%, transparent 70%)`,
-    ),
-    base,
-  ].join(', ');
-}
 ---
 
 <section id="projects" class="border-divider border-t py-24">
@@ -79,11 +75,7 @@ function meshGradient({ base, blobs }: Project['mesh']): string {
             rel="noopener noreferrer"
             class="group hover:bg-tag flex items-start gap-5 rounded-xl p-1 transition-colors duration-150"
           >
-            {/* Mesh gradient thumbnail */}
-            <div
-              class="h-36 w-36 shrink-0 rounded-xl sm:h-32 sm:w-32 md:h-36 md:w-36"
-              style={`background: ${meshGradient(project.mesh)}`}
-            />
+            <ProjectThumbnail thumbnail={project.thumbnail} id={`thumb-${project.title}`} />
 
             {/* Content */}
             <div class="min-w-0 flex-1 pt-1">

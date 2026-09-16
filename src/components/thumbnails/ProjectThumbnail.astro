@@ -1,0 +1,19 @@
+---
+import AuroraThumbnail from './AuroraThumbnail.astro';
+import MeshThumbnail from './MeshThumbnail.astro';
+import type { Thumbnail } from './types';
+
+interface Props {
+  thumbnail: Thumbnail;
+  /** SVG 内の id 衝突を避けるための接頭辞。ページ内で一意にする */
+  id?: string;
+}
+
+const { thumbnail, id } = Astro.props;
+---
+
+{/* サイズと角丸はカード側のレイアウト都合なのでここで持つ */}
+<div class="relative h-36 w-36 shrink-0 overflow-hidden rounded-xl sm:h-32 sm:w-32 md:h-36 md:w-36">
+  {thumbnail.kind === 'mesh' && <MeshThumbnail mesh={thumbnail} />}
+  {thumbnail.kind === 'aurora' && <AuroraThumbnail id={id} palette={thumbnail.palette} />}
+</div>

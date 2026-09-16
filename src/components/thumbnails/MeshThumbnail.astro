@@ -1,0 +1,22 @@
+---
+import type { Mesh } from './types';
+
+interface Props {
+  mesh: Mesh;
+}
+
+const { mesh } = Astro.props;
+
+/** blob を放射グラデーションとして重ね、最背面に base 色を敷く */
+function meshGradient({ base, blobs }: Mesh): string {
+  return [
+    ...blobs.map(
+      ({ color, x, y }) =>
+        `radial-gradient(ellipse 85% 85% at ${x}% ${y}%, ${color}cc 0%, transparent 70%)`,
+    ),
+    base,
+  ].join(', ');
+}
+---
+
+<div class="absolute inset-0" style={`background: ${meshGradient(mesh)}`}></div>

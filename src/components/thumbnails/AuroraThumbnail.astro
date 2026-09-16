@@ -1,0 +1,199 @@
+---
+/**
+ * spaco の Aurora 背景 (frontend/src/components/PageBackground/Aurora) をサムネイル用に移植したもの。
+ * 親要素いっぱいに絶対配置されるので、呼び出し側で relative / overflow-hidden を付ける。
+ */
+import { auroraStyle, type AuroraPaletteOverride } from './aurora-palette';
+
+interface Props {
+  /** SVG 内の gradient / filter id の接頭辞。同一ページで複数描画する場合は一意にする */
+  id?: string;
+  /** 既定パレットからの差分 */
+  palette?: AuroraPaletteOverride;
+}
+
+const { id = 'aurora', palette } = Astro.props;
+---
+
+<div class="aurora absolute inset-0" style={auroraStyle(palette)} aria-hidden="true">
+  <div class="aurora-base absolute inset-0"></div>
+  <svg
+    class="absolute inset-0 size-full"
+    viewBox="0 0 1600 1000"
+    preserveAspectRatio="none"
+    focusable="false"
+  >
+    <defs>
+      <linearGradient
+        id={`${id}-blue`}
+        x1="120"
+        y1="0"
+        x2="580"
+        y2="490"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stop-color="var(--aurora-blue)"></stop>
+        <stop offset="0.45" stop-color="var(--aurora-sky)"></stop>
+        <stop offset="0.8" stop-color="var(--aurora-ice)"></stop>
+        <stop offset="1" stop-color="var(--aurora-cloud)"></stop>
+      </linearGradient>
+      <linearGradient
+        id={`${id}-cyan`}
+        x1="100"
+        y1="540"
+        x2="1470"
+        y2="210"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stop-color="var(--aurora-cyan)"></stop>
+        <stop offset="0.35" stop-color="var(--aurora-mist)"></stop>
+        <stop offset="0.65" stop-color="var(--aurora-cloud)"></stop>
+        <stop offset="1" stop-color="var(--aurora-teal)"></stop>
+      </linearGradient>
+      <linearGradient
+        id={`${id}-pink`}
+        x1="90"
+        y1="850"
+        x2="790"
+        y2="560"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stop-color="var(--aurora-pink)"></stop>
+        <stop offset="0.4" stop-color="var(--aurora-lilac)"></stop>
+        <stop offset="0.75" stop-color="var(--aurora-lavender)" stop-opacity="0.7"></stop>
+        <stop offset="1" stop-color="var(--aurora-cloud)" stop-opacity="0"></stop>
+      </linearGradient>
+      <linearGradient
+        id={`${id}-lower-cyan`}
+        x1="730"
+        y1="930"
+        x2="1340"
+        y2="550"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stop-color="var(--aurora-mist)" stop-opacity="0.2"></stop>
+        <stop offset="0.45" stop-color="var(--aurora-ice)"></stop>
+        <stop offset="1" stop-color="var(--aurora-teal)"></stop>
+      </linearGradient>
+      <linearGradient
+        id={`${id}-violet`}
+        x1="1080"
+        y1="620"
+        x2="1580"
+        y2="960"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stop-color="var(--aurora-ice)" stop-opacity="0.4"></stop>
+        <stop offset="0.35" stop-color="var(--aurora-lavender)"></stop>
+        <stop offset="0.8" stop-color="var(--aurora-violet)"></stop>
+        <stop offset="1" stop-color="var(--aurora-lilac)"></stop>
+      </linearGradient>
+      <filter
+        id={`${id}-soften`}
+        x="-10%"
+        y="-10%"
+        width="120%"
+        height="120%"
+        color-interpolation-filters="sRGB"
+      >
+        <feGaussianBlur stdDeviation="14"></feGaussianBlur>
+      </filter>
+      <filter
+        id={`${id}-highlight`}
+        x="-10%"
+        y="-20%"
+        width="120%"
+        height="140%"
+        color-interpolation-filters="sRGB"
+      >
+        <feGaussianBlur stdDeviation="20"></feGaussianBlur>
+      </filter>
+    </defs>
+
+    <g filter={`url(#${id}-soften)`}>
+      <path
+        d="M-80-80H1420C1240 55 870 85 645 280C410 485 225 495-80 245Z"
+        fill={`url(#${id}-blue)`}></path>
+      <path
+        d="M-80 255C115 285 220 500 505 510C805 530 1160 220 1680 125V355C1185 330 925 610 575 640C270 665 100 500-80 555Z"
+        fill={`url(#${id}-cyan)`}></path>
+      <path
+        d="M-80 720C140 550 370 555 610 600C805 635 925 620 1070 570C835 770 540 790 335 855C140 915 20 985-80 975Z"
+        fill={`url(#${id}-pink)`}></path>
+      <path
+        d="M-80 1020C185 1010 420 890 665 815C905 735 1000 750 1190 625C1380 500 1510 390 1680 375V680C1450 720 1200 810 965 955L720 1080H-80Z"
+        fill={`url(#${id}-lower-cyan)`}></path>
+      <path
+        d="M740 1080C900 865 1040 720 1210 600C1385 470 1540 455 1680 400V1080Z"
+        fill={`url(#${id}-violet)`}></path>
+    </g>
+
+    <g
+      fill="none"
+      stroke="var(--aurora-highlight)"
+      stroke-width="32"
+      stroke-opacity="0.65"
+      filter={`url(#${id}-highlight)`}
+    >
+      <path d="M-80 255C115 285 220 500 505 510C805 530 1160 220 1680 125"></path>
+      <path
+        d="M-80 965C160 1000 420 875 665 805C905 725 1000 740 1190 615C1380 490 1510 380 1680 365"
+      ></path>
+    </g>
+  </svg>
+</div>
+
+<style>
+  /**
+   * 実際に SVG が参照する --aurora-* を、テーマに応じて
+   * インライン style で渡された入力 (--aurora-light-* / --aurora-dark-*) から写す。
+   * 色そのものは aurora-palette.ts が持つ。
+   */
+  .aurora {
+    --aurora-blue: var(--aurora-light-blue);
+    --aurora-sky: var(--aurora-light-sky);
+    --aurora-ice: var(--aurora-light-ice);
+    --aurora-cloud: var(--aurora-light-cloud);
+    --aurora-cyan: var(--aurora-light-cyan);
+    --aurora-mist: var(--aurora-light-mist);
+    --aurora-teal: var(--aurora-light-teal);
+    --aurora-pink: var(--aurora-light-pink);
+    --aurora-lilac: var(--aurora-light-lilac);
+    --aurora-lavender: var(--aurora-light-lavender);
+    --aurora-violet: var(--aurora-light-violet);
+    --aurora-highlight: var(--aurora-light-highlight);
+    --aurora-base-start: var(--aurora-light-base-start);
+    --aurora-base-mid: var(--aurora-light-base-mid);
+    --aurora-base-end: var(--aurora-light-base-end);
+  }
+
+  :global(.dark) .aurora {
+    --aurora-blue: var(--aurora-dark-blue);
+    --aurora-sky: var(--aurora-dark-sky);
+    --aurora-ice: var(--aurora-dark-ice);
+    --aurora-cloud: var(--aurora-dark-cloud);
+    --aurora-cyan: var(--aurora-dark-cyan);
+    --aurora-mist: var(--aurora-dark-mist);
+    --aurora-teal: var(--aurora-dark-teal);
+    --aurora-pink: var(--aurora-dark-pink);
+    --aurora-lilac: var(--aurora-dark-lilac);
+    --aurora-lavender: var(--aurora-dark-lavender);
+    --aurora-violet: var(--aurora-dark-violet);
+    --aurora-highlight: var(--aurora-dark-highlight);
+    --aurora-base-start: var(--aurora-dark-base-start);
+    --aurora-base-mid: var(--aurora-dark-base-mid);
+    --aurora-base-end: var(--aurora-dark-base-end);
+  }
+
+  .aurora-base {
+    background-image:
+      radial-gradient(ellipse at 95% 0%, var(--aurora-sky) 0%, transparent 40%),
+      radial-gradient(ellipse at 0% 100%, var(--aurora-lavender) 0%, transparent 35%),
+      linear-gradient(
+        135deg,
+        var(--aurora-base-start),
+        var(--aurora-base-mid) 55%,
+        var(--aurora-base-end)
+      );
+  }
+</style>
