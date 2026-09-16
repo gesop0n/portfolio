@@ -150,9 +150,7 @@ const infra = [
                     <div class="flex flex-wrap gap-x-4 gap-y-2">
                       {group.frameworks.map((fw) => (
                         <div class="flex items-center gap-1.5">
-                          {iconMap[fw] && (
-                            <Fragment set:html={renderIcon(iconMap[fw], 14)} />
-                          )}
+                          {iconMap[fw] && <Fragment set:html={renderIcon(iconMap[fw], 14)} />}
                           <span class="text-secondary text-sm">{fw}</span>
                         </div>
                       ))}
@@ -203,9 +201,7 @@ const infra = [
           {
             infra.map((name) => (
               <li class="flex items-center gap-2">
-                {iconMap[name] && (
-                  <Fragment set:html={renderIcon(iconMap[name], 14)} />
-                )}
+                {iconMap[name] && <Fragment set:html={renderIcon(iconMap[name], 14)} />}
                 <span class="text-emphasis text-sm font-medium">{name}</span>
               </li>
             ))
